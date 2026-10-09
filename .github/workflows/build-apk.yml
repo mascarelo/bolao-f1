@@ -58,6 +58,10 @@ jobs:
           package com.bolao.f1;
 
           import android.os.Bundle;
+          import android.graphics.drawable.ColorDrawable;
+          import android.graphics.drawable.Drawable;
+          import android.graphics.drawable.LayerDrawable;
+          import android.view.Gravity;
           import android.view.View;
           import androidx.core.graphics.Insets;
           import androidx.core.view.ViewCompat;
@@ -78,6 +82,11 @@ jobs:
                           | WindowInsetsCompat.Type.displayCutout()
                           | WindowInsetsCompat.Type.ime());
                       v.setPadding(s.left, s.top, s.right, s.bottom);
+                      LayerDrawable ld = new LayerDrawable(new Drawable[] {
+                          new ColorDrawable(0xFF0F0F14), new ColorDrawable(0xFFE10600) });
+                      ld.setLayerGravity(1, Gravity.TOP | Gravity.FILL_HORIZONTAL);
+                      ld.setLayerHeight(1, s.top);
+                      v.setBackground(ld);
                       return WindowInsetsCompat.CONSUMED;
                   });
                   WindowInsetsControllerCompat c = WindowCompat.getInsetsController(getWindow(), root);
