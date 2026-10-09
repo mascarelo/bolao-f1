@@ -842,7 +842,40 @@
       "",
       ""
      ],
-     "pk": {}
+     "pk": {
+      "p1": [
+       "Kimi Antonelli",
+       "Kimi Antonelli",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p2": [
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Kimi Antonelli",
+       "Max Verstappen",
+       "George Russell",
+       "Lando Norris",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Kimi Antonelli",
+       "Kimi Antonelli",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "Lando Norris"
+      ]
+     }
     },
     {
      "n": "GP dos Estados Unidos",
