@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Bolão F1</title>
+<title>Bolão F1 - Mascarelo Inc</title>
 <style id="css">
 :root{box-sizing:border-box;--bg:#f2f2f4;--cd:#fff;--fg:#15151e;--mut:#6b6b78;--ac:#e10600;--ok:#1a8f3c;--st:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));--sb:max(var(--sb),var(--safe-area-inset-bottom,0px));padding-top:var(--st);padding-bottom:var(--sb)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}}
 :root[data-theme="dark"]{--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}
 *{box-sizing:border-box}html{scroll-padding-top:var(--st)}
 body{margin:0;background:var(--bg);color:var(--fg);font:14px Roboto,"Segoe UI",Arial,sans-serif}
-#app{max-width:520px;margin:0 auto;padding-bottom:90px}
+#app{max-width:520px;margin:0 auto;padding-bottom:101px}
 .top{background:var(--ac);color:#fff;padding:14px 16px;font-weight:700;font-size:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .top small{display:block;font-weight:400;font-size:12px;opacity:.9}
 .top button{background:#fff3;color:#fff;border:0;border-radius:16px;padding:7px 12px;font-size:12px}
@@ -19,7 +19,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font:14px Roboto,"Segoe UI",A
 .av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
 .num{font-weight:700;font-size:16px}
 .pod{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:6px 0 14px}
-.pod div{flex:1;max-width:110px;text-align:center;border-radius:12px 12px 0 0;padding:8px 2px;background:var(--cd)}
+.pod>div{flex:1;max-width:110px;text-align:center;border-radius:12px 12px 0 0;padding:8px 2px;background:var(--cd)}
 .pod .a{height:118px;background:linear-gradient(#e1060055,var(--cd))}.pod .b2{height:96px}.pod .c{height:80px}
 .pod .av{margin:0 auto 4px}.pod strong{display:block;font-size:17px}
 .pill{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto}
@@ -28,15 +28,15 @@ body{margin:0;background:var(--bg);color:var(--fg);font:14px Roboto,"Segoe UI",A
 .fld i{font-style:normal;width:36px;color:var(--mut);font-size:12px}.fld em{font-style:normal;font-weight:700;color:var(--ok);min-width:30px;text-align:right}
 select,input{font:inherit;color:var(--fg);background:var(--bg);border:1px solid #8884;border-radius:10px;padding:9px;width:100%}
 .fld select{border:0;background:transparent;padding:6px 0}
-select:disabled{opacity:1;-webkit-text-fill-color:var(--fg)}
+select:disabled{opacity:1;-webkit-text-fill-color:var(--fg);-webkit-appearance:none;appearance:none}
 .btn{display:block;width:100%;background:var(--ac);color:#fff;border:0;border-radius:24px;padding:12px;font-weight:700;font-size:15px;margin-top:8px}
 .ib{background:none;border:0;font-size:17px;padding:4px}
 .rule{background:var(--cd);border-radius:12px;padding:9px;text-align:center;color:var(--mut);font-size:12px;margin-top:8px}
 .sec{color:var(--mut);font-size:11px;letter-spacing:.8px;text-transform:uppercase;margin:12px 2px 6px}
 .add{display:flex;gap:6px;margin-bottom:10px}.add button{flex:none;width:auto;padding:0 16px;border:0;border-radius:10px;background:var(--ac);color:#fff;font-weight:700}
-.nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--cd);border-top:1px solid #8883;padding-bottom:var(--sb);max-width:520px;margin:0 auto}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--cd);border-top:1px solid #8883;padding-bottom:calc(var(--sb) + 11px);max-width:520px;margin:0 auto}
 .nav button{flex:1;border:0;background:none;color:var(--mut);padding:8px 0 7px;font-size:11px}.nav b{display:block;font-size:19px;font-weight:400}.nav .on{color:var(--ac)}
-.bar{position:fixed;left:12px;right:12px;bottom:calc(66px + var(--sb));max-width:496px;margin:0 auto;background:#222;color:#fff;border-radius:14px;padding:8px 8px 8px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px #0006}
+.bar{position:fixed;left:12px;right:12px;bottom:calc(77px + var(--sb));max-width:496px;margin:0 auto;background:#222;color:#fff;border-radius:14px;padding:8px 8px 8px 14px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px #0006}
 .bar span{flex:1;font-size:13px}.bar button{background:var(--ac);color:#fff;border:0;border-radius:18px;padding:9px 16px;font-weight:700}
 </style></head><body>
 <div id="app"></div>
@@ -94,7 +94,7 @@ function vPicks(){
  (isP?`<div class="pill">${S.people.map(p=>`<button class="${p.id==pid?'on':''}" data-a="pid" data-k="${p.id}">${e(p.n)}</button>`).join('')}</div>`:'')+f+
  (isP&&pid?`<div class="card" style="justify-content:space-between"><span>Total da corrida</span><span class="num">${sc(r,pid)} pts</span></div>`:'')+
  (!isP&&ed()?`<div class="rule">Ao salvar, os pontos de todos são recalculados</div>`:'')}
-const vCfg=()=>`<div class="card" style="display:block"><div class="t">Conexão com o GitHub</div><div class="m" style="margin:6px 0 10px">Preencha uma vez. Só o administrador precisa disso.</div><input id="cu" placeholder="Seu usuário do GitHub" value="${e(cfg.u||'')}" style="margin-bottom:6px"><input id="cr" placeholder="Repositório" value="${e(cfg.r||'bolao-f1')}" style="margin-bottom:6px"><input id="ct" type="password" placeholder="Token de acesso" value="${e(cfg.t||'')}"><button class="btn" data-a="cfgs">Salvar e conectar</button></div>`;
+const vCfg=()=>`<div class="card" style="display:block"><div class="t">Conexão com o GitHub</div><div class="m" style="margin:6px 0 10px">Preencha uma vez. Só o administrador precisa disso.</div><input id="cu" placeholder="Seu usuário do GitHub" value="${e(cfg.u||'mascarelo')}" style="margin-bottom:6px"><input id="cr" placeholder="Repositório" value="${e(cfg.r||'bolao-f1')}" style="margin-bottom:6px"><input id="ct" type="password" placeholder="Token de acesso" value="${e(cfg.t||'')}"><button class="btn" data-a="cfgs">Salvar e conectar</button></div>`;
 const TABS=[['🏆','Ranking',vRank,'Ranking geral'],['🏁','Corridas',vRaces,'Corridas'],['🏎️','Pilotos',vDrivers,'Equipes e pilotos'],['👥','Pessoas',vPeople,'Participantes'],['✍️','Palpites',vPicks,'Palpites e resultados']];
 function render(){
  if(loading){$('app').innerHTML='<div class="b"><div class="rule">Carregando…</div></div>';return}
