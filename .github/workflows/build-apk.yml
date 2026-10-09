@@ -52,6 +52,42 @@ jobs:
               for n in ('ic_launcher', 'ic_launcher_round', 'ic_launcher_foreground'):
                   r.save(f'{p}/{n}.png')
           PY
+      - name: Ajustar bordas da tela (barra de navegação do Android)
+        run: |
+          cat > android/app/src/main/java/com/bolao/f1/MainActivity.java <<'JAVA'
+          package com.bolao.f1;
+
+          import android.os.Bundle;
+          import android.view.View;
+          import androidx.core.graphics.Insets;
+          import androidx.core.view.ViewCompat;
+          import androidx.core.view.WindowCompat;
+          import androidx.core.view.WindowInsetsCompat;
+          import androidx.core.view.WindowInsetsControllerCompat;
+          import com.getcapacitor.BridgeActivity;
+
+          public class MainActivity extends BridgeActivity {
+              @Override
+              public void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  View root = findViewById(android.R.id.content);
+                  root.setBackgroundColor(0xFF0F0F14);
+                  ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                      Insets s = insets.getInsets(
+                          WindowInsetsCompat.Type.systemBars()
+                          | WindowInsetsCompat.Type.displayCutout()
+                          | WindowInsetsCompat.Type.ime());
+                      v.setPadding(s.left, s.top, s.right, s.bottom);
+                      return WindowInsetsCompat.CONSUMED;
+                  });
+                  WindowInsetsControllerCompat c = WindowCompat.getInsetsController(getWindow(), root);
+                  if (c != null) {
+                      c.setAppearanceLightStatusBars(false);
+                      c.setAppearanceLightNavigationBars(false);
+                  }
+              }
+          }
+          JAVA
       - name: Usar a chave de assinatura fixa
         env:
           CHAVE: ${{ secrets.CHAVE_ASSINATURA }}
