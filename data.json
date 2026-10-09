@@ -1,6 +1,2269 @@
 {
  "seasons": [
   {
+   "y": 2024,
+   "races": [
+    {
+     "n": "GP do Bahrein",
+     "st": "x",
+     "res": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "pk": {}
+    },
+    {
+     "n": "GP da Arábia Saudita",
+     "st": "x",
+     "res": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "pk": {}
+    },
+    {
+     "n": "GP da Austrália",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Carlos Sainz Jr",
+      "Charles Leclerc",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Sergio Pérez"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Sergio Pérez",
+       "Charles Leclerc",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Charles Leclerc",
+       "Lewis Hamilton",
+       "Fernando Alonso"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Sergio Pérez",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Fernando Alonso"
+      ]
+     }
+    },
+    {
+     "n": "GP do Japão",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Sergio Pérez",
+      "Carlos Sainz Jr",
+      "Charles Leclerc",
+      "Lando Norris"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Sergio Pérez",
+       "Charles Leclerc",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Charles Leclerc",
+       "Sergio Pérez",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Sergio Pérez",
+       "Lando Norris",
+       "Oscar Piastri"
+      ]
+     }
+    },
+    {
+     "n": "GP da China",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Lando Norris",
+      "Sergio Pérez",
+      "Charles Leclerc",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Lewis Hamilton",
+       "Lando Norris",
+       "Fernando Alonso"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Fernando Alonso",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Sergio Pérez",
+       "Lewis Hamilton",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP de Miami",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Lando Norris",
+      "Max Verstappen",
+      "Charles Leclerc",
+      "Sergio Pérez",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Sergio Pérez",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Lando Norris"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Sergio Pérez",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Sergio Pérez",
+       "Carlos Sainz Jr",
+       "George Russell",
+       "Fernando Alonso"
+      ]
+     }
+    },
+    {
+     "n": "GP da Emilia-Romagna",
+     "st": "x",
+     "res": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+     ],
+     "pk": {}
+    },
+    {
+     "n": "GP de Mônaco",
+     "st": "",
+     "res": [
+      "Charles Leclerc",
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Carlos Sainz Jr",
+      "Lando Norris",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Sergio Pérez"
+      ]
+     }
+    },
+    {
+     "n": "GP do Canadá",
+     "st": "",
+     "res": [
+      "George Russell",
+      "Max Verstappen",
+      "Lando Norris",
+      "George Russell",
+      "Lewis Hamilton",
+      "Oscar Piastri"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Sergio Pérez"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Charles Leclerc",
+       "Oscar Piastri"
+      ]
+     }
+    },
+    {
+     "n": "GP da Espanha",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Max Verstappen",
+      "Lando Norris",
+      "Lewis Hamilton",
+      "George Russell",
+      "Charles Leclerc"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell",
+       "Carlos Sainz Jr",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP da Áustria",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "George Russell",
+      "Oscar Piastri",
+      "Carlos Sainz Jr",
+      "Lewis Hamilton",
+      "Max Verstappen"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Lando Norris",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Lewis Hamilton",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Inglaterra",
+     "st": "",
+     "res": [
+      "George Russell",
+      "Lewis Hamilton",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Lewis Hamilton",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Oscar Piastri",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Lewis Hamilton",
+       "George Russell"
+      ],
+      "p4": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Sergio Pérez",
+       "Carlos Sainz Jr"
+      ]
+     }
+    },
+    {
+     "n": "GP da Hungria",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Oscar Piastri",
+      "Lando Norris",
+      "Lewis Hamilton",
+      "Charles Leclerc",
+      "Max Verstappen"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Lewis Hamilton",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Pierre Gasly",
+       "Carlos Sainz Jr"
+      ]
+     }
+    },
+    {
+     "n": "GP da Bélgica",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Lewis Hamilton",
+      "Oscar Piastri",
+      "Charles Leclerc",
+      "Max Verstappen",
+      "Lando Norris"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "Max Verstappen",
+       "George Russell"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "George Russell"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP da Holanda",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Max Verstappen",
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Lewis Hamilton",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Itália",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Lando Norris",
+      "Carlos Sainz Jr",
+      "Lewis Hamilton"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Lewis Hamilton",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ]
+     }
+    },
+    {
+     "n": "GP do Azerbaijão",
+     "st": "",
+     "res": [
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Charles Leclerc",
+      "George Russell",
+      "Lando Norris",
+      "Max Verstappen"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Lewis Hamilton",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ]
+     }
+    },
+    {
+     "n": "GP de Singapura",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Max Verstappen",
+      "Oscar Piastri",
+      "George Russell",
+      "Charles Leclerc"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Sergio Pérez",
+       "Max Verstappen"
+      ],
+      "p2": [
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Max Verstappen"
+      ],
+      "p3": [
+       "Charles Leclerc",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Carlos Sainz Jr"
+      ]
+     }
+    },
+    {
+     "n": "GP dos Estados Unidos",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Charles Leclerc",
+      "Carlos Sainz Jr",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Carlos Sainz Jr"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Carlos Sainz Jr"
+      ]
+     }
+    },
+    {
+     "n": "GP do México",
+     "st": "",
+     "res": [
+      "Carlos Sainz Jr",
+      "Carlos Sainz Jr",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Lewis Hamilton",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Max Verstappen",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Carlos Sainz Jr",
+       "Max Verstappen"
+      ]
+     }
+    },
+    {
+     "n": "GP de São Paulo",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Max Verstappen",
+      "Esteban Ocon",
+      "Pierre Gasly",
+      "George Russell",
+      "Charles Leclerc"
+     ],
+     "pk": {
+      "p1": [
+       "Charles Leclerc",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Max Verstappen",
+       "Carlos Sainz Jr",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Charles Leclerc",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Carlos Sainz Jr",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Max Verstappen",
+       "Oscar Piastri"
+      ]
+     }
+    },
+    {
+     "n": "GP de Las Vegas",
+     "st": "",
+     "res": [
+      "George Russell",
+      "George Russell",
+      "Lewis Hamilton",
+      "Carlos Sainz Jr",
+      "Charles Leclerc",
+      "Max Verstappen"
+     ],
+     "pk": {
+      "p1": [
+       "Charles Leclerc",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Charles Leclerc",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Carlos Sainz Jr"
+      ]
+     }
+    },
+    {
+     "n": "GP do Catar",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Pierre Gasly",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Charles Leclerc",
+       "Charles Leclerc",
+       "George Russell",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "Max Verstappen",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Charles Leclerc",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Carlos Sainz Jr",
+       "Oscar Piastri",
+       "Max Verstappen"
+      ]
+     }
+    },
+    {
+     "n": "GP de Abu Dhabi",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Carlos Sainz Jr",
+      "Charles Leclerc",
+      "Lewis Hamilton",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Carlos Sainz Jr",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "George Russell",
+       "Carlos Sainz Jr"
+      ],
+      "p4": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Carlos Sainz Jr"
+      ]
+     }
+    }
+   ],
+   "drivers": [
+    {
+     "n": "Esteban Ocon",
+     "t": "BWT Alpine F1 Team"
+    },
+    {
+     "n": "Pierre Gasly",
+     "t": "BWT Alpine F1 Team"
+    },
+    {
+     "n": "Fernando Alonso",
+     "t": "Aston Martin Aramco F1 Team"
+    },
+    {
+     "n": "Lance Stroll",
+     "t": "Aston Martin Aramco F1 Team"
+    },
+    {
+     "n": "Charles Leclerc",
+     "t": "Scuderia Ferrari"
+    },
+    {
+     "n": "Carlos Sainz Jr",
+     "t": "Scuderia Ferrari"
+    },
+    {
+     "n": "Kevin Magnussen",
+     "t": "Money Gram Haas F1 Team"
+    },
+    {
+     "n": "Nico Hülkenberg",
+     "t": "Money Gram Haas F1 Team"
+    },
+    {
+     "n": "Guanyu Zhou",
+     "t": "StakeF1 Team Kick Sauber"
+    },
+    {
+     "n": "Valtteri Bottas",
+     "t": "StakeF1 Team Kick Sauber"
+    },
+    {
+     "n": "Lando Norris",
+     "t": "McLaren F1 Team"
+    },
+    {
+     "n": "Oscar Piastri",
+     "t": "McLaren F1 Team"
+    },
+    {
+     "n": "Lewis Hamilton",
+     "t": "Mercedes-AMG Petronas F1 Team"
+    },
+    {
+     "n": "George Russell",
+     "t": "Mercedes-AMG Petronas F1 Team"
+    },
+    {
+     "n": "Daniel Ricciardo",
+     "t": "VisaCash App RB F1 Team"
+    },
+    {
+     "n": "Yuki Tsunoda",
+     "t": "VisaCash App RB F1 Team"
+    },
+    {
+     "n": "Sergio Pérez",
+     "t": "Oracle Red Bull Racing"
+    },
+    {
+     "n": "Max Verstappen",
+     "t": "Oracle Red Bull Racing"
+    },
+    {
+     "n": "Logan Sargeant",
+     "t": "Williams Racing"
+    },
+    {
+     "n": "Alexander Albon",
+     "t": "Williams Racing"
+    }
+   ],
+   "people": [
+    {
+     "id": "p1",
+     "n": "Thiago"
+    },
+    {
+     "id": "p2",
+     "n": "João"
+    },
+    {
+     "id": "p3",
+     "n": "Lucas"
+    },
+    {
+     "id": "p4",
+     "n": "Caio"
+    }
+   ]
+  },
+  {
+   "y": 2025,
+   "races": [
+    {
+     "n": "GP da Austrália",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Max Verstappen",
+      "George Russell",
+      "Kimi Antonelli",
+      "Alexander Albon"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "George Russell"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Lewis Hamilton",
+       "George Russell",
+       "Max Verstappen",
+       "Oscar Piastri"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "Max Verstappen"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lewis Hamilton",
+       "Charles Leclerc",
+       "Max Verstappen"
+      ]
+     }
+    },
+    {
+     "n": "GP da China",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Oscar Piastri",
+      "Lando Norris",
+      "George Russell",
+      "Max Verstappen",
+      "Esteban Ocon"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP do Japão",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Charles Leclerc",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "George Russell"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ]
+     }
+    },
+    {
+     "n": "GP do Bahrein",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Oscar Piastri",
+      "George Russell",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Lewis Hamilton"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Arábia Saudita",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Oscar Piastri",
+      "Max Verstappen",
+      "Charles Leclerc",
+      "Lando Norris",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Charles Leclerc",
+       "Max Verstappen"
+      ]
+     }
+    },
+    {
+     "n": "GP de Miami",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Oscar Piastri",
+      "Lando Norris",
+      "George Russell",
+      "Max Verstappen",
+      "Alexander Albon"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc",
+       "Lando Norris"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Emilia-Romagna",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Lewis Hamilton",
+      "Alexander Albon"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Kimi Antonelli"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Kimi Antonelli"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP de Mônaco",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Oscar Piastri",
+      "Max Verstappen",
+      "Alexander Albon"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lando Norris",
+       "George Russell"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Kimi Antonelli"
+      ]
+     }
+    },
+    {
+     "n": "GP da Espanha",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Oscar Piastri",
+      "Lando Norris",
+      "Charles Leclerc",
+      "George Russell",
+      "Nico Hulkenberg"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP do Canadá",
+     "st": "",
+     "res": [
+      "George Russell",
+      "George Russell",
+      "Max Verstappen",
+      "Kimi Antonelli",
+      "Oscar Piastri",
+      "Charles Leclerc"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "George Russell"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Áustria",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Charles Leclerc",
+      "Lewis Hamilton",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "George Russell",
+       "George Russell",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Kimi Antonelli",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Inglaterra",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Nico Hulkenberg",
+      "Lewis Hamilton",
+      "Max Verstappen"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Kimi Antonelli",
+       "Charles Leclerc"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Lewis Hamilton",
+       "Max Verstappen"
+      ]
+     }
+    },
+    {
+     "n": "GP da Bélgica",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Oscar Piastri",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Max Verstappen",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Kimi Antonelli",
+       "Charles Leclerc"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Kimi Antonelli",
+       "George Russell"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP da Hungria",
+     "st": "",
+     "res": [
+      "Charles Leclerc",
+      "Lando Norris",
+      "Oscar Piastri",
+      "George Russell",
+      "Charles Leclerc",
+      "Fernando Alonso"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p3": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP da Holanda",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Oscar Piastri",
+      "Max Verstappen",
+      "Isack Hadjar",
+      "George Russell",
+      "Alexander Albon"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Max Verstappen",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP da Itália",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Charles Leclerc",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "Kimi Antonelli"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Max Verstappen",
+       "George Russell"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell",
+       "Max Verstappen"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP do Azerbaijão",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "George Russell",
+      "Carlos Sainz Jr",
+      "Kimi Antonelli",
+      "Liam Lawson"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Lewis Hamilton",
+       "George Russell"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP de Singapura",
+     "st": "",
+     "res": [
+      "George Russell",
+      "George Russell",
+      "Max Verstappen",
+      "Lando Norris",
+      "Oscar Piastri",
+      "Kimi Antonelli"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP dos Estados Unidos",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Lewis Hamilton",
+      "Oscar Piastri"
+     ],
+     "pk": {
+      "p1": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Oscar Piastri",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Lando Norris",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP do México",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Charles Leclerc",
+      "Max Verstappen",
+      "Oliver Bearman",
+      "Oscar Piastri"
+     ],
+     "pk": {
+      "p1": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "Lando Norris",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "George Russell",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP de São Paulo",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Lando Norris",
+      "Kimi Antonelli",
+      "Max Verstappen",
+      "George Russell",
+      "Oscar Piastri"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "George Russell",
+       "Oscar Piastri"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p3": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Lewis Hamilton"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "George Russell"
+      ]
+     }
+    },
+    {
+     "n": "GP de Las Vegas",
+     "st": "",
+     "res": [
+      "Lando Norris",
+      "Max Verstappen",
+      "George Russell",
+      "Kimi Antonelli",
+      "Charles Leclerc",
+      "Carlos Sainz Jr"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "Kimi Antonelli",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Charles Leclerc",
+       "Oscar Piastri",
+       "George Russell"
+      ],
+      "p3": [
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto",
+       "Gabriel Bortoleto"
+      ],
+      "p4": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "George Russell",
+       "Lando Norris",
+       "Kimi Antonelli",
+       "Oscar Piastri"
+      ]
+     }
+    },
+    {
+     "n": "GP do Catar",
+     "st": "",
+     "res": [
+      "Oscar Piastri",
+      "Max Verstappen",
+      "Oscar Piastri",
+      "Carlos Sainz Jr",
+      "Lando Norris",
+      "Kimi Antonelli"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Lando Norris",
+       "George Russell",
+       "Oscar Piastri",
+       "Kimi Antonelli"
+      ],
+      "p2": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Oscar Piastri",
+       "Charles Leclerc"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Charles Leclerc",
+       "George Russell"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Max Verstappen",
+       "George Russell",
+       "Oscar Piastri",
+       "Charles Leclerc"
+      ]
+     }
+    },
+    {
+     "n": "GP de Abu Dhabi",
+     "st": "",
+     "res": [
+      "Max Verstappen",
+      "Max Verstappen",
+      "Oscar Piastri",
+      "Lando Norris",
+      "Charles Leclerc",
+      "George Russell"
+     ],
+     "pk": {
+      "p1": [
+       "Lando Norris",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "George Russell",
+       "Lando Norris",
+       "Kimi Antonelli"
+      ],
+      "p2": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Lando Norris",
+       "Oscar Piastri",
+       "George Russell",
+       "Kimi Antonelli"
+      ],
+      "p3": [
+       "Max Verstappen",
+       "Max Verstappen",
+       "Oscar Piastri",
+       "Lando Norris",
+       "George Russell",
+       "Charles Leclerc"
+      ],
+      "p4": [
+       "Lando Norris",
+       "Lando Norris",
+       "Oscar Piastri",
+       "Max Verstappen",
+       "George Russell",
+       "Kimi Antonelli"
+      ]
+     }
+    }
+   ],
+   "drivers": [
+    {
+     "n": "Pierre Gasly",
+     "t": "BWT Alpine F1 Team"
+    },
+    {
+     "n": "Jack Doohan",
+     "t": "BWT Alpine F1 Team"
+    },
+    {
+     "n": "Fernando Alonso",
+     "t": "Aston Martin Aramco F1 Team"
+    },
+    {
+     "n": "Lance Stroll",
+     "t": "Aston Martin Aramco F1 Team"
+    },
+    {
+     "n": "Charles Leclerc",
+     "t": "Scuderia Ferrari"
+    },
+    {
+     "n": "Lewis Hamilton",
+     "t": "Scuderia Ferrari"
+    },
+    {
+     "n": "Oliver Bearman",
+     "t": "Money Gram Haas F1 Team"
+    },
+    {
+     "n": "Esteban Ocon",
+     "t": "Money Gram Haas F1 Team"
+    },
+    {
+     "n": "Gabriel Bortoleto",
+     "t": "StakeF1 Team Kick Sauber"
+    },
+    {
+     "n": "Nico Hulkenberg",
+     "t": "StakeF1 Team Kick Sauber"
+    },
+    {
+     "n": "Lando Norris",
+     "t": "McLaren F1 Team"
+    },
+    {
+     "n": "Oscar Piastri",
+     "t": "McLaren F1 Team"
+    },
+    {
+     "n": "Kimi Antonelli",
+     "t": "Mercedes-AMG Petronas F1 Team"
+    },
+    {
+     "n": "George Russell",
+     "t": "Mercedes-AMG Petronas F1 Team"
+    },
+    {
+     "n": "Isack Hadjar",
+     "t": "VisaCash App RB F1 Team"
+    },
+    {
+     "n": "Yuki Tsunoda",
+     "t": "VisaCash App RB F1 Team"
+    },
+    {
+     "n": "Liam Lawson",
+     "t": "Oracle Red Bull Racing"
+    },
+    {
+     "n": "Max Verstappen",
+     "t": "Oracle Red Bull Racing"
+    },
+    {
+     "n": "Carlos Sainz Jr",
+     "t": "Williams Racing"
+    },
+    {
+     "n": "Alexander Albon",
+     "t": "Williams Racing"
+    }
+   ],
+   "people": [
+    {
+     "id": "p1",
+     "n": "Thiago"
+    },
+    {
+     "id": "p2",
+     "n": "João"
+    },
+    {
+     "id": "p3",
+     "n": "Lucas"
+    },
+    {
+     "id": "p4",
+     "n": "Caio"
+    }
+   ]
+  },
+  {
    "y": 2026,
    "races": [
     {
