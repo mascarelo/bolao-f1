@@ -1,5 +1,10 @@
 {
   "appId": "com.bolao.f1",
   "appName": "Bolão F1 by Mascarelo",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "disable"
+    }
+  }
 }
