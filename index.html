@@ -5,9 +5,9 @@
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <style id="css">
-:root{box-sizing:border-box;--bg:#f2f2f4;--cd:#fff;--fg:#15151e;--mut:#6b6b78;--ac:#e10600;--ok:#1a8f3c;--st:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));--sb:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));padding-top:var(--st);padding-bottom:var(--sb)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}}
-:root[data-theme="dark"]{--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}
+:root{box-sizing:border-box;--s1:#2a78d6;--s2:#e0561f;--s3:#12966a;--s4:#b07400;--s5:#e87ba4;--s6:#008300;--s7:#6250d6;--s8:#e34948;--grid:#e8e8ec;--axis:#c9c9d1;--tx2:#52514e;--tx3:#6b6b78;--bg:#f2f2f4;--cd:#fff;--fg:#15151e;--mut:#6b6b78;--ac:#e10600;--ok:#1a8f3c;--st:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));--sb:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));padding-top:var(--st);padding-bottom:var(--sb)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--grid:#2c2c37;--axis:#3a3a47;--tx2:#c3c2c9;--tx3:#8b8a96;--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--grid:#2c2c37;--axis:#3a3a47;--tx2:#c3c2c9;--tx3:#8b8a96;--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}
 *{box-sizing:border-box}html{scroll-padding-top:var(--st)}
 body{margin:0;background:var(--bg);color:var(--fg);font:14px Roboto,"Segoe UI",Arial,sans-serif}
 #app{width:100%;display:flex;flex-direction:column;min-height:100vh;padding-bottom:104px}
@@ -82,6 +82,22 @@ select:disabled{opacity:1;-webkit-text-fill-color:var(--fg);-webkit-appearance:n
  .top{padding-top:8px;padding-bottom:8px;font-size:17px}.top small{font-size:11px}.nav b{font-size:17px}.nav button{padding-top:4px;padding-bottom:3px}.nav{padding-bottom:calc(var(--sb) + 6px)}
  #app{padding-bottom:64px}
 }
+
+.evo{display:block}.evo .ctitle{font-weight:700;font-size:15px}.evo .csub{color:var(--mut);font-size:12px;margin:2px 0 10px}
+.evo .seg{display:flex;gap:4px;background:#8882;border-radius:18px;padding:3px;margin-bottom:10px}
+.evo .seg button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:13px;padding:7px 0;border-radius:15px}.evo .seg button.on{background:var(--ac);color:#fff}.evo .seg button.ic{flex:0 0 40px}
+.evo .leg{display:flex;flex-wrap:wrap;gap:4px 12px;margin:2px 0 8px}
+.evo .leg button{display:flex;align-items:center;gap:6px;background:none;border:0;color:var(--tx2);font:inherit;font-size:12.5px;padding:3px 0}.evo .leg button.off{opacity:.35}
+.evo .leg i{display:block;width:16px;height:0;border-top:3px solid;border-radius:2px}
+.evo .chart{position:relative}.evo svg{display:block;width:100%;height:auto;overflow:visible;touch-action:pan-y}
+.evo svg text{font-family:inherit}
+.evo .tip{position:absolute;pointer-events:none;background:var(--cd);border:1px solid var(--grid);border-radius:10px;padding:8px 10px;font-size:12px;min-width:130px;box-shadow:0 4px 14px #0004;z-index:5}
+.evo .tip .h{color:var(--tx2);font-size:11px;margin-bottom:4px}.evo .tip .r{display:flex;align-items:center;gap:7px;margin-top:3px}
+.evo .tip .r i{display:block;width:10px;border-top:3px solid;border-radius:2px}.evo .tip .r b{margin-left:auto;padding-left:12px;color:var(--fg)}.evo .tip .r span{color:var(--tx2)}
+.evo table.t{width:100%;border-collapse:collapse;font-size:12px}.evo table.t th,.evo table.t td{padding:5px 4px;text-align:right}.evo table.t th:first-child,.evo table.t td:first-child{text-align:left}
+.evo table.t th{color:var(--tx3);font-weight:500;border-bottom:1px solid var(--grid);position:sticky;top:0;background:var(--cd)}.evo table.t td{border-bottom:1px solid var(--grid)}
+.evo .tw{max-height:360px;overflow:auto}.evo .note{color:var(--tx3);font-size:11px;margin-top:8px;line-height:1.4}
+@media (min-width:900px){.t0>.evo{grid-column:2;grid-row:1/span 5;margin:0 0 8px;align-self:start}.t0>.rule{grid-row:6/span 10!important}}
 
 #splash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:linear-gradient(#e10600 0%,#5c0a12 42%,#0f0f14 100%);transition:opacity .35s ease}
 #splash.out{opacity:0;pointer-events:none}
@@ -200,6 +216,7 @@ function vRank(){
  L.forEach((x,i)=>x.pos=i&&x.t==L[i-1].t?L[i-1].pos:i+1);
  const pod=[[1,'b2'],[0,'a'],[2,'c']].filter(([i])=>L[i]).map(([i,c])=>`<div class="${c}"><div class="av">${ini(L[i].p.n)}</div>${e(L[i].p.n)}<strong>${L[i].t}</strong>${MED[i]}</div>`).join('');
  return `<div class="pod">${pod}</div>`+L.map(x=>`<div class="card"><span class="num" style="width:30px">${x.pos<4?MED[x.pos-1]:x.pos+'º'}</span><div class="g"><div class="t">${e(x.p.n)}</div><div class="m">${x.c} corridas pontuadas</div></div><span class="num">${x.t}</span></div>`).join('')+
+ `<div class="card evo" id="evo"></div>`+
  `<div class="rule" style="text-align:left;padding:14px 16px;font-size:13px;color:var(--fg)"><div style="font-weight:700;margin-bottom:8px">Regras de pontuação:</div><div style="display:grid;grid-template-columns:56px 1fr;row-gap:4px">${LB.map((l,i)=>`<div>${l}:</div><div>${String(PTS[i]).padStart(2,'0')} pontos</div>`).join('')}</div><div style="margin-top:12px;color:var(--mut)">Pontua somente quem acertar as posições exatas.</div></div>`}
 function vRaces(){
  const add=ed()?`<div class="add"><input id="nr" placeholder="Nova corrida (ex.: GP do Japão)"><button data-a="addr">+</button></div>`:'';
@@ -238,6 +255,90 @@ function vPicks(){
  (blockRes?sel(r,arr,ds,0).replace(/<select /g,'<select disabled '):sel(r,arr,ds,isP?1:0))+
  (isP&&pid?`<div class="card" style="justify-content:space-between"><span>Total da corrida</span><span class="num">${sc(r,pid)} pts</span></div>`:'')+
  (!isP&&ed()&&r.closed?`<div class="rule">Ao salvar, os pontos de todos são recalculados</div>`:'')}
+
+/* ===== Evolução do ranking ===== */
+let evoMode='pts',evoOff=new Set(),evoHover=null,evoRT=0;
+const ABBR={'GP do Bahrein':'BRN','GP de Bahrein':'BRN','GP da Arábia Saudita':'KSA','GP da Austrália':'AUS','GP do Japão':'JPN','GP da China':'CHN','GP de Miami':'MIA','GP da Emilia-Romagna':'EMI','GP de Mônaco':'MON','GP do Canadá':'CAN','GP da Espanha':'ESP','GP da Espanha (Madri)':'MAD','GP de Barcelona-Catalunha':'BAR','GP da Áustria':'AUT','GP da Inglaterra':'GBR','GP da Hungria':'HUN','GP da Bélgica':'BEL','GP da Holanda':'NED','GP da Itália':'ITA','GP do Azerbaijão':'AZE','GP de Singapura':'SGP','GP dos Estados Unidos':'USA','GP do México':'MEX','GP de São Paulo':'SAO','GP de Las Vegas':'LVG','GP do Catar':'QAT','GP de Abu Dhabi':'ABU'};
+const abbr=n=>ABBR[n]||String(n).replace(/^GP (d[aeo]s?|de) /,'').slice(0,3).toUpperCase();
+function evoData(){
+ const rs=S.races.filter(done),names=S.people.map(p=>p.n),ids=S.people.map(p=>p.id);
+ const pts=ids.map(id=>rs.map(r=>sc(r,id)));
+ const cum=pts.map(a=>{let t=0;return a.map(v=>t+=v)});
+ const pos=ids.map(()=>[]);let prev=ids.map((_,i)=>i);
+ for(let i=0;i<rs.length;i++){const o=ids.map((_,k)=>k).sort((a,b)=>cum[b][i]-cum[a][i]||prev.indexOf(a)-prev.indexOf(b));o.forEach((k,r)=>pos[k][i]=r+1);prev=o}
+ return{rs,names,pts,cum,pos}}
+const SVGNS='http://www.w3.org/2000/svg';
+const sv=(t,a,p)=>{const x=document.createElementNS(SVGNS,t);for(const k in a)x.setAttribute(k,a[k]);if(p)p.appendChild(x);return x};
+const hx=(t,c,x)=>{const d=document.createElement(t);if(c)d.className=c;if(x!=null)d.textContent=x;return d};
+const ecol=k=>`var(--s${k%8+1})`;
+function dodge(items,min,lo,hi){items.sort((a,b)=>a.y-b.y);items.forEach(it=>it.ly=it.y);
+ for(let i=1;i<items.length;i++)if(items[i].ly-items[i-1].ly<min)items[i].ly=items[i-1].ly+min;
+ const ov=items[items.length-1].ly-hi;if(ov>0){items[items.length-1].ly-=ov;for(let i=items.length-2;i>=0;i--)if(items[i+1].ly-items[i].ly<min)items[i].ly=items[i+1].ly-min}
+ if(items[0].ly<lo){const d=lo-items[0].ly;items.forEach(it=>it.ly+=d)}return items}
+function niceMax(m,steps){const st=steps.find(([lim])=>m>lim)||steps[steps.length-1];const step=st[1];return{step,ymax:Math.max(step,Math.ceil(m*1.02/(step/2))*(step/2))}}
+function evoChart(host,E){
+ host.innerHTML='';const N=E.rs.length,P=E.names.length,m=evoMode;
+ const W=Math.round(host.clientWidth)||300,H=W>420?(m=='bar'?230:270):(m=='bar'?200:238);
+ const longest=Math.max(...E.names.map(n=>n.length))+4,L=28,R=m=='bar'?6:Math.max(62,longest*6+14),T=8,B=22,pw=W-L-R,ph=H-T-B;
+ const svg=sv('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Gráfico de evolução do ranking. Use a visão em tabela para ver os valores.'},host);
+ const shown=E.names.map((n,k)=>k).filter(k=>!evoOff.has(k));
+ const last=Math.min(6,N),i0=N-last;
+ let ymax=1,ticks=[],yf;
+ if(m=='pts'){const mx=Math.max(1,...E.cum.map(a=>a[N-1]));const q=niceMax(mx,[[450,200],[200,100],[100,50],[0,25]]);ymax=q.ymax;for(let v=0;v<=ymax;v+=q.step)ticks.push(v);yf=v=>T+ph-v/ymax*ph}
+ else if(m=='pos'){for(let v=1;v<=P;v++)ticks.push(v);yf=v=>T+8+(v-1)*(ph-16)/Math.max(1,P-1)}
+ else{const mx=Math.max(1,...E.pts.flatMap(a=>a.slice(i0)));const q=niceMax(mx,[[60,40],[30,20],[0,10]]);ymax=q.ymax;for(let v=0;v<=ymax;v+=q.step)ticks.push(v);yf=v=>T+ph-v/ymax*ph}
+ const xs=i=>L+i*pw/(N-1);
+ ticks.forEach(t=>{const y=yf(t);sv('line',{x1:L,x2:W-R,y1:y,y2:y,stroke:t==0&&m!='pos'?'var(--axis)':'var(--grid)','stroke-width':1},svg);
+  sv('text',{x:L-5,y:y+3.5,'text-anchor':'end','font-size':10,fill:'var(--tx3)'},svg).textContent=m=='pos'?t+'º':t});
+ if(m=='bar'){const gw=pw/last;for(let k=0;k<last;k++)sv('text',{x:L+gw*k+gw/2,y:H-7,'text-anchor':'middle','font-size':10,fill:'var(--tx3)'},svg).textContent=abbr(E.rs[i0+k].n)}
+ else{const nt=Math.min(5,N),idx=[...new Set([...Array(nt)].map((_,k)=>Math.round(k*(N-1)/Math.max(1,nt-1))))];
+  idx.forEach(i=>sv('text',{x:xs(i),y:H-7,'text-anchor':i==0?'start':i==N-1?'end':'middle','font-size':10,fill:'var(--tx3)'},svg).textContent=abbr(E.rs[i].n))}
+ const cross=sv('line',{y1:T,y2:T+ph,stroke:'var(--tx3)','stroke-width':1,opacity:0},svg);
+ if(m=='bar'){const gw=pw/last,bw=Math.max(3,Math.min(24,(gw-8)/Math.max(1,shown.length)-2));
+  for(let k=0;k<last;k++){const i=i0+k,gx=L+gw*k+gw/2-(shown.length*(bw+2)-2)/2;
+   shown.forEach((p,j)=>{const v=E.pts[p][i];if(!v)return;const h=Math.max(2,v/ymax*ph),x=gx+j*(bw+2),y=T+ph-h,r=Math.min(4,h,bw/2);
+    sv('path',{d:`M${x},${T+ph}V${y+r}Q${x},${y} ${x+r},${y}H${x+bw-r}Q${x+bw},${y} ${x+bw},${y+r}V${T+ph}Z`,fill:ecol(p)},svg)})}
+ }else{
+  shown.forEach(p=>{const vals=m=='pts'?E.cum[p]:E.pos[p],pt=vals.map((v,i)=>[xs(i),yf(v)]);
+   sv('path',{d:'M'+pt.map(q=>q.join(',')).join('L'),fill:'none',stroke:ecol(p),'stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'},svg);
+   if(m=='pos')pt.forEach(q=>sv('circle',{cx:q[0],cy:q[1],r:3.6,fill:ecol(p),stroke:'var(--cd)','stroke-width':2},svg))});
+  const items=shown.map(p=>{const v=m=='pts'?E.cum[p][N-1]:E.pos[p][N-1];return{p,y:yf(v),v:m=='pts'?v:v+'º'}});
+  if(items.length)dodge(items,13,T+4,T+ph-2).forEach(it=>{
+   sv('path',{d:`M${W-R+4},${it.y} L${W-R+10},${it.ly}`,stroke:ecol(it.p),'stroke-width':1,fill:'none'},svg);
+   const t=sv('text',{x:W-R+13,y:it.ly+3.5,'font-size':11,fill:'var(--tx2)'},svg);t.textContent=E.names[it.p]+' ';
+   sv('tspan',{'font-weight':700,fill:'var(--fg)'},t).textContent=it.v})}
+ if(!shown.length)return;
+ const tip=hx('div','tip');tip.style.display='none';host.appendChild(tip);
+ const xAt=i=>m=='bar'?L+((i-i0)+.5)*(pw/last):xs(i);
+ const show=i=>{const rows=shown.map(p=>({p,v:m=='pts'?E.cum[p][i]:m=='pos'?E.pos[p][i]:E.pts[p][i]})).sort((a,b)=>m=='pos'?a.v-b.v:b.v-a.v);
+  tip.innerHTML='';tip.appendChild(hx('div','h','Etapa '+(i+1)+' · '+E.rs[i].n));
+  rows.forEach(r=>{const d=hx('div','r');const k=hx('i');k.style.borderColor=ecol(r.p);d.append(k,hx('span','',E.names[r.p]),hx('b','',m=='pos'?r.v+'º':m=='pts'?r.v+' pts':'+'+r.v));
+   if(m=='pos'){const c=hx('span','',E.cum[r.p][i]+' pts');c.style.cssText='font-size:10px;color:var(--tx3);margin-left:6px';d.appendChild(c)}tip.appendChild(d)});
+  if(m!='bar'){cross.setAttribute('x1',xs(i));cross.setAttribute('x2',xs(i));cross.setAttribute('opacity',.7)}
+  tip.style.display='block';const tw=tip.offsetWidth,px=xAt(i);let left=px+12;if(left+tw>W-(m=='bar'?0:R))left=px-tw-12;tip.style.left=Math.max(0,left)+'px';
+  if(m=='pts'&&i<N/2){tip.style.top='auto';tip.style.bottom=(B+6)+'px'}else{tip.style.bottom='auto';tip.style.top='6px'}};
+ const hide=()=>{tip.style.display='none';cross.setAttribute('opacity',0)};
+ const at=ev=>{const r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)*W/r.width;let i;
+  if(m=='bar')i=i0+Math.max(0,Math.min(last-1,Math.floor((x-L)/(pw/last))));else i=Math.max(0,Math.min(N-1,Math.round((x-L)/(pw/(N-1)))));show(i)};
+ svg.addEventListener('pointermove',at);svg.addEventListener('pointerdown',at);svg.addEventListener('pointerleave',hide);}
+function evoTable(host,E){const w=hx('div','tw'),t=hx('table','t'),hd=document.createElement('tr');
+ ['Etapa',...E.names].forEach(x=>hd.appendChild(hx('th','',x)));t.appendChild(hd);
+ for(let i=E.rs.length-1;i>=0;i--){const tr=document.createElement('tr');tr.appendChild(hx('td','',(i+1)+' · '+abbr(E.rs[i].n)));E.names.forEach((n,k)=>tr.appendChild(hx('td','',E.cum[k][i])));t.appendChild(tr)}
+ w.appendChild(t);host.appendChild(w);host.appendChild(hx('div','note','Pontos acumulados após cada corrida. É a mesma informação do gráfico, em tabela.'))}
+function mountEvo(){
+ const root=$('evo');if(!root)return;root.innerHTML='';const E=evoData();
+ root.appendChild(hx('div','ctitle','Evolução da temporada'));
+ if(E.rs.length<2){root.appendChild(hx('div','csub',S.y+' · aparece quando houver 2 corridas apuradas'));return}
+ root.appendChild(hx('div','csub',S.y+' · '+E.rs.length+' corridas apuradas'));
+ const seg=hx('div','seg');
+ [['pts','Pontos'],['pos','Posição'],['bar','Por corrida'],['tab','▦']].forEach(([k,l])=>{const b=hx('button',k=='tab'?'ic':'',l);if(k=='tab'){b.title='Ver como tabela';b.setAttribute('aria-label','Ver como tabela')}if(evoMode==k)b.classList.add('on');b.onclick=()=>{evoMode=k;mountEvo()};seg.appendChild(b)});
+ root.appendChild(seg);
+ if(evoMode=='tab'){const h=hx('div');root.appendChild(h);evoTable(h,E);return}
+ const leg=hx('div','leg');E.names.forEach((n,k)=>{const b=hx('button',evoOff.has(k)?'off':'');const i=hx('i');i.style.borderColor=ecol(k);b.append(i,n);
+  b.onclick=()=>{evoOff.has(k)?evoOff.delete(k):evoOff.add(k);if(evoOff.size==E.names.length)evoOff.clear();mountEvo()};leg.appendChild(b)});
+ root.appendChild(leg);const host=hx('div','chart');root.appendChild(host);evoChart(host,E);
+ root.appendChild(hx('div','note',evoMode=='pts'?'Toque no gráfico para ver os pontos de cada pessoa em cada corrida. Toque num nome para ocultar ou mostrar.':evoMode=='pos'?'Posição no ranking após cada corrida. Empates ficam na ordem da corrida anterior.':'Pontos feitos em cada uma das últimas 6 corridas.'))}
+window.addEventListener('resize',()=>{clearTimeout(evoRT);evoRT=setTimeout(mountEvo,150)});
 const TABS=[['🏆','Ranking',vRank,'Ranking geral'],['🏁','Corridas',vRaces,'Corridas'],['🏎️','Pilotos',vDrivers,'Equipes e pilotos'],['👥','Pessoas',vPeople,'Participantes'],['✍️','Palpites',vPicks,'Palpites e resultados']];
 const myName=()=>{const p=S.people.find(x=>x.id==me);return p?p.n:(user&&user.email?user.email.split('@')[0]:'')};
 function dlgHtml(){
@@ -254,6 +355,7 @@ function render(){
  <div class="b" style="padding-bottom:0"><div class="add" style="margin:0"><select data-a="season">${R.seasons.map(s=>`<option value="${s.y}" ${s===S?'selected':''}>Temporada ${s.y}</option>`).join('')}</select>${ed()?`<button data-a="ns">➕ Nova</button>`:''}${ed()&&R.seasons.length>1?`<button class="ib" data-a="del" data-k="s">${cf=='s'?'❓':'🗑️'}</button>`:''}</div>${ns&&ed()?`<div class="card" style="display:block;margin-top:8px"><input id="ny" type="number" placeholder="Ano da nova temporada (ex.: ${S.y+1})"><label class="m" style="display:block;margin:8px 0"><input type="checkbox" id="nc" checked style="width:auto"> Copiar pilotos e participantes de ${S.y}</label><button class="btn" style="margin:0" data-a="mk">Criar temporada</button></div>`:''}</div>
  <div class="b t${tab}">${TABS[tab][2]()}</div>${dirty?`<div class="bar"><span>${e(msg)||'Alterações não salvas'}</span><button data-a="save">Salvar</button></div>`:(msg?`<div class="bar"><span>${e(msg)}</span></div>`:'')}
  <div class="nav">${TABS.map((t,i)=>`<button class="${i==tab?'on':''}" data-a="tab" data-i="${i}"><b>${t[0]}</b>${t[1]}</button>`).join('')}</div>${dlgHtml()}`;
+ mountEvo();
  if(noKeep)noKeep=false;else for(const k in keep){const el=$(k);if(el&&!el.value)el.value=keep[k]}}
 const val=i=>($(i)||{value:''}).value.trim(),nid=()=>'p'+Date.now().toString(36);
 const errMsg=x=>{const c=x&&x.code||'';
