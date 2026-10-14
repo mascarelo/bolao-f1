@@ -136,7 +136,7 @@ if(NATIVE){document.documentElement.style.setProperty('--st','0px');document.doc
 const CFG={apiKey:"AIzaSyDVa3uuOUHsny9HiqfqAutoJTZf4yAorik",authDomain:"bolao-f1-d42ac.firebaseapp.com",projectId:"bolao-f1-d42ac",storageBucket:"bolao-f1-d42ac.firebasestorage.app",messagingSenderId:"126061113829",appId:"1:126061113829:web:58373d2f7378f4d0963f0c"};
 const ADMIN='admin@bolaof1.com',DOM='@bolaof1.com',FV='12.19.0';
 const EMU=['localhost','127.0.0.1'].includes(location.hostname)&&new URLSearchParams(location.search).get('emu');
-let F=null,db,auth,sdkP=null,user=null,isAdmin=false,me=null,snap={};
+let F=null,db,auth,sdkP=null,user=null,isAdmin=false,me=null,mustPw=false,snap={};
 const SU=m=>`https://www.gstatic.com/firebasejs/${FV}/firebase-${m}.js`;
 function sdk(){return sdkP||(sdkP=(async()=>{
  const [a,s,u]=await Promise.all([import(SU('app')),import(SU('firestore')),import(SU('auth'))]);
@@ -202,8 +202,8 @@ async function load(silent){
 
 async function boot(){
  try{await sdk();
-  F.onAuthStateChanged(auth,async u=>{user=u;isAdmin=!!u&&u.email==ADMIN;me=null;
-   if(u&&!isAdmin){try{const d=await F.getDoc(F.doc(db,'logins',u.uid));if(d.exists())me=d.data().pessoa}catch(_){}}
+  F.onAuthStateChanged(auth,async u=>{user=u;isAdmin=!!u&&u.email==ADMIN;me=null;mustPw=false;
+   if(u&&!isAdmin){try{const d=await F.getDoc(F.doc(db,'logins',u.uid));if(d.exists()){me=d.data().pessoa;mustPw=d.data().trocar===true}}catch(_){}}
    if(!u){try{localStorage.removeItem('cache2')}catch(_){}}
    edit=false;await load()});
  }catch(x){console.warn(x);try{const c=JSON.parse(localStorage.getItem('cache2'));if(c)R=c;msg='Sem conexão: mostrando os últimos dados'}catch(_){}loading=false;useS(ys);render()}}
@@ -343,6 +343,7 @@ const TABS=[['🏆','Ranking',vRank,'Ranking geral'],['🏁','Corridas',vRaces,'
 const myName=()=>{const p=S.people.find(x=>x.id==me);return p?p.n:(user&&user.email?user.email.split('@')[0]:'')};
 function dlgHtml(){
  if(dlg=='login')return `<div class="mask"><div class="dlg"><h3>Entrar no bolão</h3><input id="lu" placeholder="Usuário (ex.: senna)" autocapitalize="none" autocomplete="username" value="${e(lastU)}" style="margin-bottom:8px"><input id="lp" type="password" placeholder="Senha" autocomplete="current-password"><div class="err">${e(dmsg)}</div><button class="btn" data-ok data-a="dologin">Entrar</button><button class="btn2" data-a="dclose">Cancelar</button></div></div>`;
+ if(mustPw)return `<div class="mask"><div class="dlg"><h3>Escolha sua senha</h3><div class="m" style="margin-bottom:10px">Por segurança, troque a senha inicial por uma só sua antes de continuar.</div><input id="pa" type="password" placeholder="Senha inicial (a que você recebeu)" autocomplete="current-password" style="margin-bottom:8px"><input id="pn" type="password" placeholder="Nova senha (mín. 6 caracteres)" autocomplete="new-password" style="margin-bottom:8px"><input id="pn2" type="password" placeholder="Repetir nova senha" autocomplete="new-password"><div class="err">${e(dmsg)}</div><button class="btn" data-ok data-a="dopw">Salvar nova senha</button><button class="btn2" data-a="logout">Sair</button></div></div>`;
  if(dlg=='pw')return `<div class="mask"><div class="dlg"><h3>Trocar minha senha</h3><input id="pa" type="password" placeholder="Senha atual" autocomplete="current-password" style="margin-bottom:8px"><input id="pn" type="password" placeholder="Nova senha (mín. 6 caracteres)" autocomplete="new-password" style="margin-bottom:8px"><input id="pn2" type="password" placeholder="Repetir nova senha" autocomplete="new-password"><div class="err">${e(dmsg)}</div><button class="btn" data-ok data-a="dopw">Salvar nova senha</button><button class="btn2" data-a="dclose">Cancelar</button></div></div>`;
  return ''}
 function render(){
@@ -395,9 +396,9 @@ const A={
  async logout(){um=false;edit=false;await F.signOut(auth)},
  async dopw(){const a=$('pa').value,n=$('pn').value,n2=$('pn2').value;
   if(!a||!n){dmsg='Preencha todos os campos';return}if(n.length<6){dmsg='A nova senha precisa ter pelo menos 6 caracteres';return}if(n!=n2){dmsg='As senhas novas não são iguais';return}
-  try{await F.reauthenticateWithCredential(user,F.EmailAuthProvider.credential(user.email,a));await F.updatePassword(user,n);dlg='';dmsg='';msg='✔ Senha alterada!'}catch(x){dmsg=errMsg(x)}},
+  try{await F.reauthenticateWithCredential(user,F.EmailAuthProvider.credential(user.email,a));await F.updatePassword(user,n);if(mustPw){await F.setDoc(F.doc(db,'logins',user.uid),{pessoa:me,trocar:false});mustPw=false}dlg='';dmsg='';msg='✔ Senha alterada!'}catch(x){dmsg=errMsg(x)}},
  /* participante */
- async savemine(){const r=S.races[ri],picks=pad6(r.pk[me]).map(x=>x||SP),real=picks.slice(1).filter(x=>x!=SP);
+ async savemine(){if(mustPw)return;const r=S.races[ri],picks=pad6(r.pk[me]).map(x=>x||SP),real=picks.slice(1).filter(x=>x!=SP);
   if(new Set(real).size!=real.length){msg='Os pilotos de 1º a 5º não podem se repetir';return}
   try{await F.setDoc(F.doc(db,`temporadas/${S.y}/corridas/${r.id}/palpites/${me}`),{picks,em:F.serverTimestamp()});r.pk[me]=picks;r.emMine=new Date();r.md=false;msg='✔ Palpite salvo!'}
   catch(x){msg=/permission/.test(x&&x.code||'')?'Os palpites desta corrida já foram encerrados.':'Sem conexão. Tente de novo.'}},
@@ -410,7 +411,7 @@ const A={
    sec=F.initializeApp(CFG,'sec'+Date.now());const sa=F.getAuth(sec);
    if(EMU)F.connectAuthEmulator(sa,'http://127.0.0.1:9099',{disableWarnings:true});
    const c=await F.createUserWithEmailAndPassword(sa,toEmail(n),pw);const id=nid();
-   await F.setDoc(F.doc(db,'logins',c.user.uid),{pessoa:id});await F.signOut(sa);
+   await F.setDoc(F.doc(db,'logins',c.user.uid),{pessoa:id,trocar:true});await F.signOut(sa);
    S.people.push({id,n});dirty=true;await A.save();noKeep=true;if(!/Erro|Sem/.test(msg))msg='✔ '+n+' criado. Login: '+lg;
   }catch(x){msg=errMsg(x)}finally{if(sec)try{await F.deleteApp(sec)}catch(_){}}},
  async close(){if(cf!='close'){cf='close';return}cf='';
