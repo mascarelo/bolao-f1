@@ -99,6 +99,13 @@ select:disabled{opacity:1;-webkit-text-fill-color:var(--fg);-webkit-appearance:n
 .evo .tw{max-height:360px;overflow:auto}.evo .note{color:var(--tx3);font-size:11px;margin-top:8px;line-height:1.4}
 @media (min-width:900px){.t0>.evo{grid-column:2;grid-row:1/span 5;margin:0 0 8px;align-self:start}.t0>.rule{grid-row:6/span 10!important}}
 
+.ag{display:block}.ag .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.ag .h b{font-size:15px}.ag .h span{font-size:11px;color:var(--mut);text-align:right}
+.ag .loc{font-size:12px;color:var(--mut);margin:2px 0 4px}.ag .day{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:10px 0 2px}
+.ag .s{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--grid);font-size:14px}.ag .day+.s{border-top:0}
+.ag .s .t{width:46px;font-variant-numeric:tabular-nums;font-weight:600}.ag .s .n{flex:1}.ag .s .x{font-size:11.5px;color:var(--mut)}
+.ag .s.past{opacity:.5}.ag .s.past .x{color:var(--ok)}.ag .s.next{background:color-mix(in srgb,var(--ac) 9%,transparent);margin:2px -8px;padding:8px;border-radius:10px;border-top:0}.ag .s.next .x{color:var(--ac);font-weight:600}
+.ag .s.race .n{font-weight:700}.ag .sp{font-size:10px;background:#8883;border-radius:8px;padding:1px 6px;margin-left:6px;color:var(--mut)}.ag .foot{font-size:10.5px;color:var(--mut);margin-top:8px}
+
 #splash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:linear-gradient(#e10600 0%,#5c0a12 42%,#0f0f14 100%);transition:opacity .35s ease}
 #splash.out{opacity:0;pointer-events:none}
 #splash img{width:min(68vw,45vh,360px);height:auto;filter:drop-shadow(0 10px 28px #000a);animation:spin .9s cubic-bezier(.2,.8,.2,1) both}
@@ -233,7 +240,7 @@ function vPeople(){
  (ed()?`<button class="ib" data-a="${ren==p.id?'rens':'ren'}" data-k="${p.id}">${ren==p.id?'✔️':'✏️'}</button><button class="ib" data-a="del" data-k="p${p.id}">${cf=='p'+p.id?'❓':'🗑️'}</button>`:'')+`</div>`).join('')}
 const sel=(r,arr,ds,on)=>LB.map((l,k)=>{const v=arr[k]||'',pt=on&&r.res[k]?(v===r.res[k]?'+'+PTS[k]:'0'):'';
  return `<div class="fld"><i>${l}</i><select ${on===2?'':dis()} data-a="pick" data-k="${k}"><option value="">—</option>${(v&&!ds.includes(v)?[v].concat(ds):ds).map(n=>`<option ${n==v?'selected':''}>${e(n)}</option>`).join('')}</select><em>${on===1?pt:''}</em></div>`}).join('');
-function vPicks(){
+function vPicks0(){
  const r=S.races[ri];if(!r)return '<div class="rule">Cadastre uma corrida primeiro</div>';
  const isP=mode=='pk',ds=[...new Set(S.drivers.map(d=>d.n).concat([SP]))].sort();
  const head=`<select data-a="race" style="margin-bottom:10px">${S.races.map((x,i)=>`<option value="${i}" ${i==ri?'selected':''}>${e(x.n)}${x.st=='x'?' (cancelada)':''}</option>`).join('')}</select>
@@ -255,6 +262,48 @@ function vPicks(){
  (blockRes?sel(r,arr,ds,0).replace(/<select /g,'<select disabled '):sel(r,arr,ds,isP?1:0))+
  (isP&&pid?`<div class="card" style="justify-content:space-between"><span>Total da corrida</span><span class="num">${sc(r,pid)} pts</span></div>`:'')+
  (!isP&&ed()&&r.closed?`<div class="rule">Ao salvar, os pontos de todos são recalculados</div>`:'')}
+
+function vPicks(){const h=vPicks0(),r=S.races[ri];return h+(mode=='pk'&&r&&r.st!='x'?'<div id="agenda"></div>':'')}
+/* ===== Agenda do GP ===== */
+const AG={},AGP={};
+const AGK=[[/bahrein|bahrain/i,/bahrain|sakhir/i],[/arábia|arabia/i,/saudi|jeddah/i],[/austrália|australia/i,/austral|melbourne/i],[/japão|japan/i,/japan|suzuka/i],[/china/i,/chin|shanghai/i],[/miami/i,/miami/i],[/emilia/i,/emilia|imola/i],[/mônaco|monaco/i,/monaco|monte/i],[/canadá|canada/i,/canad|montr/i],[/madri/i,/madrid|madring/i],[/barcelona/i,/barcelona|catalunya|montmel/i],[/espanha/i,/spain|spanish/i],[/áustria|austria/i,/austria|spielberg/i],[/inglaterra|britain|reino/i,/british|silverstone|great britain/i],[/hungria/i,/hungar|budapest/i],[/bélgica|belgica/i,/belg|\bspa\b/i],[/holanda/i,/dutch|netherlands|zandvoort/i],[/itália|italia/i,/italian|monza/i],[/azerbaij/i,/azerbaijan|baku/i],[/singapura/i,/singap/i],[/estados unidos/i,/united states|austin/i],[/méxico|mexico/i,/mexic/i],[/são paulo|sao paulo|brasil/i,/paulo|brazil|interlagos/i],[/las vegas/i,/vegas/i],[/catar|qatar/i,/qatar|lusail/i],[/abu dhabi/i,/abu dhabi|yas/i]];
+const agRounds=y=>{const c=AG[y];return Array.isArray(c)?c:null};
+function agLoad(y){
+ if(AGP[y]||AG[y])return;let cached=null;
+ try{cached=JSON.parse(localStorage.getItem('ag'+y))}catch(_){}
+ const ttl=y>=new Date().getFullYear()?6*36e5:7*864e5;
+ if(cached&&Array.isArray(cached.d)&&Date.now()-cached.t<ttl){AG[y]=cached.d;return}
+ AGP[y]=fetch('https://api.jolpi.ca/ergast/f1/'+y+'.json?limit=100').then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{
+  const d=((j.MRData||j).RaceTable||{}).Races;if(!Array.isArray(d))throw 0;AG[y]=d;try{localStorage.setItem('ag'+y,JSON.stringify({t:Date.now(),d}))}catch(_){}
+ }).catch(()=>{AG[y]=cached&&Array.isArray(cached.d)?cached.d:'err'}).finally(()=>{delete AGP[y];mountAgenda()})}
+function agMatch(y,idx){
+ const rs=agRounds(y);if(!rs)return null;const r=S.races[idx];if(!r||r.st=='x')return null;
+ const txt=x=>(x.raceName||'')+' '+((x.Circuit||{}).Location||{}).locality;
+ const k=AGK.find(q=>q[0].test(r.n));
+ if(k){const m=rs.filter(x=>k[1].test(txt(x)));if(m.length==1)return m[0]}
+ const live=S.races.map((x,i)=>i).filter(i=>S.races[i].st!='x');
+ if(live.length==rs.length)return rs[live.indexOf(idx)]||null;return null}
+const AGN=[['FirstPractice','Treino livre 1'],['SecondPractice','Treino livre 2'],['ThirdPractice','Treino livre 3'],['SprintQualifying','Classificação Sprint',1],['SprintShootout','Classificação Sprint',1],['Sprint','Corrida Sprint',1],['Qualifying','Classificação']];
+function agSessions(x){
+ const L=[];const ts=o=>o&&o.date?new Date(o.date+'T'+(o.time||'12:00:00Z')):null;
+ for(const [k,n,sp] of AGN){const t=ts(x[k]);if(t&&!isNaN(t))L.push({t,n,sp,k})}
+ const t=ts(x);if(t&&!isNaN(t))L.push({t,n:'Corrida 🏁',race:1});
+ return L.sort((a,b)=>a.t-b.t)}
+function mountAgenda(){
+ const root=$('agenda');if(!root)return;const y=S.y;agLoad(y);
+ const rs=agRounds(y);if(!rs){root.innerHTML='';return}
+ const x=agMatch(y,ri);if(!x){root.innerHTML='';return}
+ const L=agSessions(x);if(!L.length){root.innerHTML='';return}
+ const now=Date.now(),tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'',br=tz=='America/Sao_Paulo';
+ const hh=t=>t.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',hour12:false}),dd=t=>t.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit'}),dk=t=>t.toLocaleDateString('pt-BR');
+ const nx=L.findIndex(i=>i.t.getTime()+36e5>now);
+ const eta=t=>{const m=Math.round((t-now)/6e4);if(m<=0)return 'agora';if(m<60)return 'em '+m+' min';if(m<2880)return 'em '+Math.round(m/60)+'h';return 'em '+Math.round(m/1440)+' dias'};
+ let h='',last='';
+ L.forEach((i,k)=>{const d=dk(i.t);if(d!=last){last=d;h+='<div class="day">'+e(dd(i.t).replace(',',''))+'</div>'}
+  const past=i.t.getTime()+36e5<=now,isn=k==nx&&nx>=0;
+  h+='<div class="s'+(past?' past':'')+(isn?' next':'')+(i.race?' race':'')+'"><span class="t">'+hh(i.t)+'</span><span class="n">'+e(i.n)+(i.sp?'<span class="sp">SPRINT</span>':'')+'</span>'+(past?'<span class="x">✓ feito</span>':isn?'<span class="x">'+eta(i.t)+'</span>':'')+'</div>'});
+ const loc=((x.Circuit||{}).circuitName||'')+(((x.Circuit||{}).Location||{}).locality?' · '+x.Circuit.Location.locality:'');
+ root.innerHTML='<div class="card ag"><div class="h"><b>📅 Agenda do GP</b><span>'+(br?'horário de Brasília':'seu fuso'+(tz?' ('+e(tz)+')':''))+'</span></div><div class="loc">'+e(loc)+'</div>'+h+'<div class="foot">Fonte: calendário da F1 (Jolpica). Horários podem mudar.</div></div>'}
 
 /* ===== Evolução do ranking ===== */
 let evoMode='pts',evoOff=new Set(),evoHover=null,evoRT=0;
@@ -356,7 +405,7 @@ function render(){
  <div class="b" style="padding-bottom:0"><div class="add" style="margin:0"><select data-a="season">${R.seasons.map(s=>`<option value="${s.y}" ${s===S?'selected':''}>Temporada ${s.y}</option>`).join('')}</select>${ed()?`<button data-a="ns">➕ Nova</button>`:''}${ed()&&R.seasons.length>1?`<button class="ib" data-a="del" data-k="s">${cf=='s'?'❓':'🗑️'}</button>`:''}</div>${ns&&ed()?`<div class="card" style="display:block;margin-top:8px"><input id="ny" type="number" placeholder="Ano da nova temporada (ex.: ${S.y+1})"><label class="m" style="display:block;margin:8px 0"><input type="checkbox" id="nc" checked style="width:auto"> Copiar pilotos e participantes de ${S.y}</label><button class="btn" style="margin:0" data-a="mk">Criar temporada</button></div>`:''}</div>
  <div class="b t${tab}">${TABS[tab][2]()}</div>${dirty?`<div class="bar"><span>${e(msg)||'Alterações não salvas'}</span><button data-a="save">Salvar</button></div>`:(msg?`<div class="bar"><span>${e(msg)}</span></div>`:'')}
  <div class="nav">${TABS.map((t,i)=>`<button class="${i==tab?'on':''}" data-a="tab" data-i="${i}"><b>${t[0]}</b>${t[1]}</button>`).join('')}</div>${dlgHtml()}`;
- mountEvo();
+ mountEvo();mountAgenda();
  if(noKeep)noKeep=false;else for(const k in keep){const el=$(k);if(el&&!el.value)el.value=keep[k]}}
 const val=i=>($(i)||{value:''}).value.trim(),nid=()=>'p'+Date.now().toString(36);
 const errMsg=x=>{const c=x&&x.code||'';
