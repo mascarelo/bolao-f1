@@ -5,7 +5,10 @@ on:
   workflow_dispatch:
     inputs:
       teste:
-        description: 'Opcional: p1, p2, p3, p4... (ou admin) para mandar uma notificacao de teste. Vazio = rotina normal.'
+        description: 'Opcional: p1, p2, p3, p4 ou admin (varios separados por virgula, ou todos) para mandar uma notificacao de teste. Vazio = rotina normal.'
+        default: ''
+      mensagem:
+        description: 'Opcional, so no teste: texto da notificacao. Vazio = texto padrao de teste.'
         default: ''
 permissions:
   actions: write
@@ -25,6 +28,7 @@ jobs:
         env:
           SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           TESTE: ${{ inputs.teste }}
+          MENSAGEM: ${{ inputs.mensagem }}
         run: |
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
           if [ -n "$TESTE" ]; then GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" node avisos/enviar.js teste "$TESTE"
