@@ -4,6 +4,8 @@
 <title>Bolão F1 by Mascarelo</title>
 <link rel="icon" type="image/png" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#e00700">
 <style id="css">
 :root{box-sizing:border-box;--s1:#2a78d6;--s2:#e0561f;--s3:#12966a;--s4:#b07400;--s5:#e87ba4;--s6:#008300;--s7:#6250d6;--s8:#e34948;--grid:#e8e8ec;--axis:#c9c9d1;--tx2:#52514e;--tx3:#6b6b78;--bg:#f2f2f4;--cd:#fff;--fg:#15151e;--mut:#6b6b78;--ac:#e10600;--ok:#1a8f3c;--st:max(env(safe-area-inset-top,0px),var(--safe-area-inset-top,0px));--sb:max(env(safe-area-inset-bottom,0px),var(--safe-area-inset-bottom,0px));padding-top:var(--st);padding-bottom:var(--sb)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767;--grid:#2c2c37;--axis:#3a3a47;--tx2:#c3c2c9;--tx3:#8b8a96;--bg:#0f0f14;--cd:#1a1a22;--fg:#f2f2f4;--mut:#9a9aa8;--ok:#7be495}}
@@ -338,7 +340,7 @@ function mountAgenda(){
  let h='',last='';
  L.forEach((i,k)=>{const d=dk(i.t);if(d!=last){last=d;h+='<div class="day">'+e(dd(i.t).replace(',',''))+'</div>'}
   const past=i.t.getTime()+36e5<=now,isn=k==nx&&nx>=0;
-  h+='<div class="s'+(past?' past':'')+(isn?' next':'')+(i.race?' race':'')+'"><span class="t">'+hh(i.t)+'</span><span class="n">'+e(i.n)+(i.sp?'<span class="sp">SPRINT</span>':'')+'</span>'+(past?'<span class="x">✓ feito</span>':isn?'<span class="x">'+eta(i.t)+'</span>':'')+'</div>'});
+  h+='<div class="s'+(past?' past':'')+(isn?' next':'')+(i.race?' race':'')+'"><span class="t">'+hh(i.t)+'</span><span class="n">'+e(i.n)+(i.sp?'<span class="sp">SPRINT</span>':'')+'</span>'+(past?'<span class="x">✓ concluído</span>':isn?'<span class="x">'+eta(i.t)+'</span>':'')+'</div>'});
  const loc=((x.Circuit||{}).circuitName||'')+(((x.Circuit||{}).Location||{}).locality?' · '+x.Circuit.Location.locality:'');
  root.innerHTML='<div class="card ag"><div class="h"><b>📅 Agenda do GP</b><span>'+(br?'horário de Brasília':'seu fuso'+(tz?' ('+e(tz)+')':''))+'</span></div><div class="loc">'+e(loc)+'</div>'+h+'<div class="foot">Fonte: calendário da F1 (Jolpica). Horários podem mudar.</div></div>'}
 

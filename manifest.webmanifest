@@ -1,0 +1,14 @@
+{
+  "name": "Bolão F1 by Mascarelo",
+  "short_name": "Bolão F1",
+  "description": "Bolão de palpites da Fórmula 1",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f0f14",
+  "theme_color": "#e00700",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
