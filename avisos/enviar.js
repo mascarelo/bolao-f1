@@ -1,5 +1,6 @@
 // Envia as notificacoes do Bolao F1 (Firebase Cloud Messaging).
 // Uso: node avisos/enviar.js            -> rotina normal (roda a cada ~10 min no GitHub Actions)
+//      MENSAGEM="texto" node avisos/enviar.js teste p2,p3   -> (opcional) texto proprio; varios destinos com virgula ou "todos"
 //      node avisos/enviar.js teste p1   -> manda uma notificacao de teste para os aparelhos da pessoa p1 (ou "admin")
 // Variaveis: GOOGLE_APPLICATION_CREDENTIALS (chave) | FIRESTORE_EMULATOR_HOST (teste) | SIMULAR=1 (nao envia, so mostra)
 //            AGORA=<ISO> (relogio de teste) | AGENDA_DIR=<pasta com jolpica_AAAA.json> (calendario de teste)
@@ -137,6 +138,23 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
   return saida;
 }
 
+// Notificacao de teste. alvo: p1..p4, admin, varios separados por virgula (p2,p3) ou "todos". mensagem: texto livre opcional.
+async function teste({ db, messaging, simular, alvo, mensagem }) {
+  const lista = String(alvo || 'admin').split(',').map((x) => x.trim()).filter(Boolean);
+  const todos = lista.includes('todos');
+  const devs = (await db.collection('dispositivos').get()).docs.map((d) => d.data()).filter((d) => todos || (d.pessoa ? lista.includes(d.pessoa) : lista.includes('admin')));
+  const tokens = devs.map((d) => d.token);
+  const msg = (mensagem || '').trim();
+  const notification = msg ? { title: '💸 Bolão F1', body: msg } : { title: '🔔 Teste do Bolão', body: 'Se você está lendo isto, as notificações funcionam neste aparelho.' };
+  log2('Destino: ' + lista.join(', ') + ' | aparelhos encontrados: ' + tokens.length + ' | texto: ' + notification.body);
+  if (tokens.length && !simular) {
+    const r = await messaging.sendEachForMulticast({ tokens, notification, data: { url: SITE }, webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } } });
+    log2('Enviadas: ' + r.successCount + ' ok, ' + r.failureCount + ' com erro');
+    r.responses.forEach((x) => { if (x.error) log2('  erro: ' + x.error.code); });
+  }
+  return { tokens, notification };
+}
+
 async function main() {
   const { initializeApp, cert } = require('firebase-admin/app');
   const { getFirestore } = require('firebase-admin/firestore');
@@ -146,18 +164,9 @@ async function main() {
   const db = getFirestore(), messaging = emu ? null : getMessaging();
   const agora = process.env.AGORA ? new Date(process.env.AGORA) : new Date();
   const simular = !!process.env.SIMULAR || emu;
-  if (process.argv[2] === 'teste') {
-    const alvo = process.argv[3] || 'admin';
-    const devs = (await db.collection('dispositivos').get()).docs.map((d) => d.data()).filter((d) => (alvo === 'admin' ? !d.pessoa : d.pessoa === alvo));
-    const msgs = [];
-    const dummy = { db, messaging };
-    const tokens = devs.map((d) => d.token);
-    log2('Aparelhos encontrados para ' + alvo + ': ' + tokens.length);
-    if (tokens.length && !simular) { const r = await messaging.sendEachForMulticast({ tokens, notification: { title: '🔔 Teste do Bolão', body: 'Se você está lendo isto, as notificações funcionam neste aparelho.' }, data: { url: SITE }, webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } } }); log2('Enviadas: ' + r.successCount + ' ok, ' + r.failureCount + ' com erro'); r.responses.forEach((x) => { if (x.error) log2('  erro: ' + x.error.code); }); }
-    return;
-  }
+  if (process.argv[2] === 'teste') { await teste({ db, messaging, simular, alvo: process.argv[3], mensagem: process.env.MENSAGEM }); return; }
   await rodar({ db, messaging, agora, simular, agendaDir: process.env.AGENDA_DIR });
 }
 const log2 = (s) => console.log(s);
-module.exports = { rodar, casar, primeiroTreino };
+module.exports = { rodar, casar, primeiroTreino, teste };
 if (require.main === module) main().catch((e) => { console.error('ERRO', e.message); process.exit(1); });
