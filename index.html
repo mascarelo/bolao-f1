@@ -171,8 +171,8 @@ const anyDraft=()=>R.seasons.some(s=>s.races.some(r=>r.md));
 
 function useS(y,keep){
  const old=S;S=R.seasons.find(s=>s.y==y)||R.seasons[R.seasons.length-1]||{y:new Date().getFullYear(),races:[],drivers:[],people:[]};
- ri=Math.max(0,S.races.map(done).lastIndexOf(true));
- if(mineMode()){const k=S.races.findIndex(r=>!r.closed&&r.st!='x');if(k>=0)ri=k}
+ const k=S.races.findIndex(r=>r.st!='x'&&!done(r));
+ ri=k>=0?k:Math.max(0,S.races.map(done).lastIndexOf(true));
  if(keep!=null&&old&&old.y==S.y&&keep<S.races.length)ri=keep;
  pid=mineMode()?me:(S.people[0]||{}).id}
 let ys='';try{ys=sessionStorage.getItem('y')}catch(_){}
