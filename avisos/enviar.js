@@ -37,6 +37,15 @@ const done = (r) => r.st !== 'x' && (r.res || []).length === 6 && r.res.every(Bo
 const pontos = (r, pid) => (r.pk && r.pk[pid] || []).reduce((a, p, i) => a + (p && p !== SP && p === r.res[i] ? PTS[i] : 0), 0);
 const plural = (n, s, p) => n + ' ' + (n === 1 ? s : p);
 
+// posicoes do palpite: pole, 1o..5o. Devolve os indices vazios (vazio ou "Sem palpites"); sem documento = todas vazias
+const POS = ['pole', '1º', '2º', '3º', '4º', '5º'];
+const vazio = (picks) => POS.map((_, i) => i).filter((i) => !picks || !picks[i] || picks[i] === SP);
+function faltaTexto(v) {
+  const n = v.map((i) => POS[i]);
+  if (n.length === 1) return 'falta ' + (v[0] === 0 ? 'a pole' : 'o ' + n[0]);
+  return 'faltam ' + n.slice(0, -1).join(', ') + ' e ' + n[n.length - 1];
+}
+
 function textoRestante(ms) {
   const m = Math.round(ms / 6e4);
   if (m >= 90) return plural(Math.round(m / 60), 'hora', 'horas');
@@ -114,7 +123,7 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
       await marcar([k]);
     }
   }
-  // 3) lembretes de palpite (so quem ainda nao enviou)
+  // 3) lembretes de palpite (quem nao enviou nada: "Falta seu palpite"; quem salvou incompleto: "Seu palpite esta incompleto"; completo nao recebe)
   const abertas = races.map((r, i) => [r, i]).filter(([r]) => !r.palpitesEncerrados && r.st !== 'x');
   if (abertas.length) {
     const rounds = await calendario(y, agendaDir);
@@ -124,12 +133,24 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
       const dt = t - agora; if (dt <= 0) continue;
       for (const L of LEMB) {
         if (!(dt <= L.h * H && dt > L.h * H - L.tol)) continue;
-        const enviou = new Set((await db.collection('temporadas/' + y + '/corridas/' + r.id + '/palpites').get()).docs.map((d) => d.id));
+        const picksDe = {};
+        (await db.collection('temporadas/' + y + '/corridas/' + r.id + '/palpites').get()).docs.forEach((d) => { picksDe[d.id] = (d.data() || {}).picks || []; });
         const alvo = {};
-        for (const d of com(L.k)) { if (!d.pessoa || enviou.has(d.pessoa) || enviados[chave('lem', L.k, y, r.id, d.pessoa)]) continue; (alvo[d.pessoa] = alvo[d.pessoa] || []).push(d.token); }
+        for (const d of com(L.k)) { if (!d.pessoa || enviados[chave('lem', L.k, y, r.id, d.pessoa)]) continue; (alvo[d.pessoa] = alvo[d.pessoa] || []).push(d.token); }
         for (const pid of Object.keys(alvo)) {
-          const body = L.h === 1 ? r.n + ': o 1º treino começa em ' + textoRestante(dt) + '.' : r.n + ': o 1º treino é em ' + textoRestante(dt) + ' (' + quando(t, agora) + ').';
-          await enviar(alvo[pid], { title: L.h === 1 ? '⏰ Última chamada' : '⏰ Falta seu palpite', body }, L.k + ' ' + r.id + ' ' + pid);
+          const vazias = vazio(picksDe[pid]);
+          if (picksDe[pid] && vazias.length === 0) continue; // palpite completo: nao avisa
+          const inc = picksDe[pid] && vazias.length < 6; // salvou, mas faltam posicoes
+          const resto = textoRestante(dt);
+          let title, body;
+          if (!inc) {
+            title = L.h === 1 ? '⏰ Última chamada' : '⏰ Falta seu palpite';
+            body = L.h === 1 ? r.n + ': o 1º treino começa em ' + resto + '.' : r.n + ': o 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
+          } else {
+            title = L.h === 1 ? '⏰ Última chamada' : '⏰ Seu palpite está incompleto';
+            body = L.h === 1 ? r.n + ': ' + faltaTexto(vazias) + '. O 1º treino começa em ' + resto + '.' : r.n + ': ' + faltaTexto(vazias) + '. O 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
+          }
+          await enviar(alvo[pid], { title, body }, L.k + ' ' + r.id + ' ' + pid + (inc ? ' incompleto' : ''));
           await marcar([chave('lem', L.k, y, r.id, pid)]);
         }
       }
@@ -168,5 +189,5 @@ async function main() {
   await rodar({ db, messaging, agora, simular, agendaDir: process.env.AGENDA_DIR });
 }
 const log2 = (s) => console.log(s);
-module.exports = { rodar, casar, primeiroTreino, teste };
+module.exports = { rodar, casar, primeiroTreino, teste, faltaTexto, vazio };
 if (require.main === module) main().catch((e) => { console.error('ERRO', e.message); process.exit(1); });
