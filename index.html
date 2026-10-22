@@ -263,7 +263,7 @@ function vPicks0(){
   if(!isAdmin)return head+`<div class="lock"><b>🔒</b>Palpites ocultos até o encerramento.<br>${user?'Sua conta ainda não está ligada a um participante. Fale com o administrador.':'Entre com seu usuário para ver e registrar o seu.'}</div>`+(user?'':'<button class="btn" data-a="login">Entrar</button>')}
  const arr=isP?(r.pk[pid]||[]):r.res;
  let top='';
- if(isP&&!r.closed&&isAdmin){const got=S.people.map(p=>`${e(p.n)} ${(r.pk[p.id]||[]).some(x=>x&&x!=SP)?'✔':'—'}`).join(' · ');
+ if(isP&&!r.closed&&isAdmin){const got=S.people.map(p=>`${e(p.n)} ${(n=>n==6?'✔':n>0?'\u26A0\uFE0E':'—')(pad6(r.pk[p.id]).filter(x=>x&&x!=SP).length)}`).join(' · ');
   top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip p">ABERTOS</span></div><div class="m" style="margin-top:6px">Recebidos: ${got}<br>Quem não enviar fica com "${SP}".</div></div>`+(ed()?`<button class="btn" data-a="close">${cf=='close'?'❓ Toque de novo para confirmar':'🔒 Encerrar palpites desta corrida'}</button><div class="rule">Ao encerrar, ninguém mais altera e todos os palpites ficam públicos na web</div>`:'')}
  if(isP&&r.closed&&isAdmin&&ed())top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip">ENCERRADOS</span></div></div><button class="btn2" data-a="reopen">${cf=='reopen'?'❓ Toque de novo para confirmar':'🔓 Reabrir palpites desta corrida'}</button>`;
  const blockRes=!isP&&!r.closed&&ed();
