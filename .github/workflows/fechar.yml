@@ -1,0 +1,33 @@
+name: Encerrar palpites automaticamente
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+permissions:
+  actions: write
+# Um de cada vez. Quando falta ate 2 horas para o encerramento, o processo fica esperando ate o minuto certo.
+concurrency:
+  group: fechar
+  cancel-in-progress: false
+jobs:
+  fechar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 135
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save firebase-admin
+      - name: Encerrar (se for a hora)
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" node avisos/fechar.js
+          rm -f "$RUNNER_TEMP/sa.json"
+      - name: Manter o agendamento ativo (o GitHub desliga agendamentos de repositorios parados ha 60 dias)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT repos/${{ github.repository }}/actions/workflows/fechar.yml/enable || true
