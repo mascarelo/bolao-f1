@@ -144,6 +144,7 @@ const sc=(r,id)=>r.st=='x'?0:(r.pk[id]||[]).reduce((a,p,i)=>a+(p&&p===r.res[i]?P
 const tot=id=>S.races.reduce((a,r)=>a+sc(r,id),0),cnt=id=>S.races.filter(r=>sc(r,id)>0).length;
 let noKeep=false,tab=0,edit=false,dirty=false,cf='',ren='',mode='pk',msg='',dlg='',dmsg='',um=false,lastU='',lastLoad=0;
 try{tab=+sessionStorage.getItem('t')||0}catch(_){}
+let CA={auto:false},FM={};/* config do admin (encerramento automático) e anotações por corrida (fechamentos) */
 let ri=0,pid,S,ns=false;
 const NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
 if(NATIVE){document.documentElement.style.setProperty('--st','0px');document.documentElement.style.setProperty('--sb','0px')}
@@ -195,6 +196,9 @@ async function loadFB(){
  await sdk();
  const out={seasons:[]};
  const ss=await F.getDocs(F.collection(db,'temporadas'));
+ if(isAdmin){
+  try{const c=await F.getDoc(F.doc(db,'config','geral'));CA={auto:c.exists()&&c.data().autoEncerrar===true}}catch(_){}
+  try{FM={};(await F.getDocs(F.collection(db,'fechamentos'))).forEach(d=>{const q=d.data();FM[d.id]={em:q.em&&q.em.toMillis?q.em.toMillis():null,feito:q.feito||null,reaberto:q.reaberto===true}})}catch(_){}}
  await Promise.all(ss.docs.map(async sd=>{
   const x=sd.data(),s={y:+sd.id,drivers:x.drivers||[],people:x.people||[],races:[]};
   const rs=await F.getDocs(F.collection(db,`temporadas/${sd.id}/corridas`));
@@ -264,8 +268,8 @@ function vPicks0(){
  const arr=isP?(r.pk[pid]||[]):r.res;
  let top='';
  if(isP&&!r.closed&&isAdmin){const got=S.people.map(p=>`${e(p.n)} ${(n=>n==6?'✔':n>0?'\u26A0\uFE0E':'—')(pad6(r.pk[p.id]).filter(x=>x&&x!=SP).length)}`).join(' · ');
-  top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip p">ABERTOS</span></div><div class="m" style="margin-top:6px">Recebidos: ${got}<br>Quem não enviar fica com "${SP}".</div></div>`+(ed()?`<button class="btn" data-a="close">${cf=='close'?'❓ Toque de novo para confirmar':'🔒 Encerrar palpites desta corrida'}</button><div class="rule">Ao encerrar, ninguém mais altera e todos os palpites ficam públicos na web</div>`:'')}
- if(isP&&r.closed&&isAdmin&&ed())top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip">ENCERRADOS</span></div></div><button class="btn2" data-a="reopen">${cf=='reopen'?'❓ Toque de novo para confirmar':'🔓 Reabrir palpites desta corrida'}</button>`;
+  top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip p">ABERTOS</span></div><div class="m" style="margin-top:6px">Recebidos: ${got}<br>${autoLn(r)}Quem não enviar fica com "${SP}".</div></div>`+(ed()?`<button class="btn" data-a="close">${cf=='close'?'❓ Toque de novo para confirmar':'🔒 Encerrar palpites desta corrida'}</button><div class="rule">Ao encerrar, ninguém mais altera e todos os palpites ficam públicos na web</div>`:'')}
+ if(isP&&r.closed&&isAdmin&&ed())top=`<div class="card" style="display:block"><div style="display:flex;justify-content:space-between"><div class="t">Situação dos palpites</div><span class="chip">ENCERRADOS</span></div>${autoFeito(r)}</div><button class="btn2" data-a="reopen">${cf=='reopen'?'❓ Toque de novo para confirmar':'🔓 Reabrir palpites desta corrida'}</button>`;
  const blockRes=!isP&&!r.closed&&ed();
  return head+top+(isP?`<div class="pill">${S.people.map(p=>`<button class="${p.id==pid?'on':''}" data-a="pid" data-k="${p.id}">${e(p.n)}</button>`).join('')}</div>`:'')+
  (blockRes?'<div class="rule" style="margin-bottom:8px">Encerre os palpites desta corrida antes de lançar o resultado.</div>':'')+
@@ -303,6 +307,29 @@ function ntDlg(){
   h+=hc('✅ Onde os avisos funcionam','Chrome, Edge e Firefox, no Android e no computador. No iPhone, pelo ícone na Tela de Início. No Brave, depois de ligar a opção acima. E no app Android do Bolão.')}
  return h+`<button class="btn2" style="margin-top:10px" data-a="dclose">Fechar</button></div></div>`}
 
+/* ===== Configurações do admin: encerramento automático dos palpites ===== */
+const fchTxt=ms=>{const d=new Date(ms),nw=new Date(),dk=x=>x.toLocaleDateString('pt-BR');const dia=dk(d)==dk(nw)?'hoje':dk(d)==dk(new Date(nw.getTime()+864e5))?'amanhã':d.toLocaleDateString('pt-BR',{weekday:'long'}).replace(/-feira/,'');return dia+' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',hour12:false})};
+const firstOpen=()=>S.races.findIndex(r=>!r.closed&&r.st!='x');
+function agFecha(){const i=firstOpen();if(i<0)return null;const x=agMatch(S.y,i);if(!x)return null;const L=agSessions(x);return L.length?{i,t:new Date(L[0].t.getTime()-3e5)}:null}
+function autoLn(r){const fm=FM[S.y+'_'+r.id]||{};
+ if(fm.reaberto)return '<b>Reaberto manualmente: não encerra mais sozinho.</b><br>';
+ if(!CA.auto)return '<b>Encerramento automático desativado</b><br>';
+ if(ri!=firstOpen())return '<b>🕑 Encerra sozinho quando for a próxima corrida</b><br>';
+ return '<b>🕑 Encerra sozinho <span id="autoinfo">'+(fm.em?fchTxt(fm.em):'…')+'</span></b><br>'}
+function autoFeito(r){const fm=FM[S.y+'_'+r.id]||{};if(!fm.feito)return '';const d=new Date(fm.em||Date.parse(fm.feito));
+ return `<div class="m" style="margin-top:6px"><b>Encerrados automaticamente em ${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}, às ${d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',hour12:false})}.</b><br>Se você reabrir, o app não encerra de novo sozinho nesta corrida.</div>`}
+function mountAuto(){
+ const a=$('autoinfo'),c=$('cfgnext');if(!a&&!c)return;agLoad(S.y);
+ const f=agFecha(),falhou=AG[S.y]=='err';
+ if(a&&a.textContent=='…')a.textContent=f?fchTxt(f.t.getTime()):falhou?'(horário do 1º treino indisponível)':'…';
+ if(c)c.textContent=f?S.races[f.i].n+', '+fchTxt(f.t.getTime()):falhou?'horário do 1º treino indisponível':'calculando…'}
+function cfgDlg(){
+ return `<div class="mask"><div class="dlg ntd"><h3>⚙️ Configurações</h3>
+ <button class="t" data-a="cfgtoggle" style="border-top:0"><span class="n">Encerrar palpites automaticamente<small>${CA.auto?'5 minutos antes do 1º treino de cada GP.':'Desativado: os palpites só encerram quando você tocar em Encerrar.'}</small></span><span class="sw ${CA.auto?'on':''}"></span></button>
+ ${CA.auto?'<div class="hc"><b>Próximo encerramento automático</b><span id="cfgnext">calculando…</span></div>':''}
+ <div class="m" style="font-size:12px;color:var(--mut);margin-top:10px">Os botões de Encerrar e Reabrir continuam funcionando.</div>
+ ${dmsg?`<div class="err">${e(dmsg)}</div>`:''}<button class="btn2" style="margin-top:10px" data-a="dclose">Fechar</button></div></div>`}
+
 /* ===== Agenda do GP ===== */
 const AG={},AGP={};
 const AGK=[[/bahrein|bahrain/i,/bahrain|sakhir/i],[/arábia|arabia/i,/saudi|jeddah/i],[/austrália|australia/i,/austral|melbourne/i],[/japão|japan/i,/japan|suzuka/i],[/china/i,/chin|shanghai/i],[/miami/i,/miami/i],[/emilia/i,/emilia|imola/i],[/mônaco|monaco/i,/monaco|monte/i],[/canadá|canada/i,/canad|montr/i],[/madri/i,/madrid|madring/i],[/barcelona/i,/barcelona|catalunya|montmel/i],[/espanha/i,/spain|spanish/i],[/áustria|austria/i,/austria|spielberg/i],[/inglaterra|britain|reino/i,/british|silverstone|great britain/i],[/hungria/i,/hungar|budapest/i],[/bélgica|belgica/i,/belg|\bspa\b/i],[/holanda/i,/dutch|netherlands|zandvoort/i],[/itália|italia/i,/italian|monza/i],[/azerbaij/i,/azerbaijan|baku/i],[/singapura/i,/singap/i],[/estados unidos/i,/united states|austin/i],[/méxico|mexico/i,/mexic/i],[/são paulo|sao paulo|brasil/i,/paulo|brazil|interlagos/i],[/las vegas/i,/vegas/i],[/catar|qatar/i,/qatar|lusail/i],[/abu dhabi/i,/abu dhabi|yas/i]];
@@ -329,6 +356,7 @@ function agSessions(x){
  const t=ts(x);if(t&&!isNaN(t))L.push({t,n:'Corrida 🏁',race:1});
  return L.sort((a,b)=>a.t-b.t)}
 function mountAgenda(){
+ mountAuto();
  const root=$('agenda');if(!root)return;const y=S.y;agLoad(y);
  const rs=agRounds(y);if(!rs){root.innerHTML='';return}
  const x=agMatch(y,ri);if(!x){root.innerHTML='';return}
@@ -435,6 +463,7 @@ function dlgHtml(){
  if(dlg=='pw')return `<div class="mask"><div class="dlg"><h3>Trocar minha senha</h3><input id="pa" type="password" placeholder="Senha atual" autocomplete="current-password" style="margin-bottom:8px"><input id="pn" type="password" placeholder="Nova senha (mín. 6 caracteres)" autocomplete="new-password" style="margin-bottom:8px"><input id="pn2" type="password" placeholder="Repetir nova senha" autocomplete="new-password"><div class="err">${e(dmsg)}</div><button class="btn" data-ok data-a="dopw">Salvar nova senha</button><button class="btn2" data-a="dclose">Cancelar</button></div></div>`;
 
  if(dlg=='notif')return ntDlg();
+ if(dlg=='cfg')return cfgDlg();
  return ''}
 function render(){
  if(loading){$('app').innerHTML='<div class="b"><div class="rule">Carregando…</div></div>';return}
@@ -442,7 +471,7 @@ function render(){
  const sub=tab==0?S.y+' · '+n+' de '+tt+' corridas apuradas':canEdit()?(edit?'Modo edição':'Toque em Editar para alterar'):isAdmin?'Administrador (edite pelo app)':user?'Olá, '+myName():'Somente consulta';
  const keep={};document.querySelectorAll('#app input[id]').forEach(i=>{if(i.type!='checkbox')keep[i.id]=i.value});
  $('app').innerHTML=`<div class="top"><div>${TABS[tab][3]}<small>${e(sub)}</small></div><span>${canEdit()?`<button data-a="edit">${edit?'👁️ Concluir':'✏️ Editar'}</button> `:''}${user?`<button data-a="umenu">${isAdmin?'Admin':e(myName())} ${um?'▴':'▾'}</button>`:`<button data-a="login">Entrar</button>`}</span></div>
- ${um?`<div class="umenu"><button data-a="pw">🔑 Trocar minha senha</button>${ntShow()?'<button data-a="ntopen">🔔 Notificações</button>':''}<button data-a="logout" style="color:#ff6a62">↩ Sair</button></div>`:''}
+ ${um?`<div class="umenu"><button data-a="pw">🔑 Trocar minha senha</button>${ntShow()?'<button data-a="ntopen">🔔 Notificações</button>':''}${canEdit()?'<button data-a="cfgopen">⚙️ Configurações</button>':''}<button data-a="logout" style="color:#ff6a62">↩ Sair</button></div>`:''}
  <div class="b" style="padding-bottom:0"><div class="add" style="margin:0"><select data-a="season">${R.seasons.map(s=>`<option value="${s.y}" ${s===S?'selected':''}>Temporada ${s.y}</option>`).join('')}</select>${ed()?`<button data-a="ns">➕ Nova</button>`:''}${ed()&&R.seasons.length>1?`<button class="ib" data-a="del" data-k="s">${cf=='s'?'❓':'🗑️'}</button>`:''}</div>${ns&&ed()?`<div class="card" style="display:block;margin-top:8px"><input id="ny" type="number" placeholder="Ano da nova temporada (ex.: ${S.y+1})"><label class="m" style="display:block;margin:8px 0"><input type="checkbox" id="nc" checked style="width:auto"> Copiar pilotos e participantes de ${S.y}</label><button class="btn" style="margin:0" data-a="mk">Criar temporada</button></div>`:''}</div>
  <div class="b t${tab}">${TABS[tab][2]()}</div>${dirty?`<div class="bar"><span>${e(msg)||'Alterações não salvas'}</span><button data-a="save">Salvar</button></div>`:(msg?`<div class="bar"><span>${e(msg)}</span></div>`:'')}
  <div class="nav">${TABS.map((t,i)=>`<button class="${i==tab?'on':''}" data-a="tab" data-i="${i}"><b>${t[0]}</b>${t[1]}</button>`).join('')}</div>${dlgHtml()}`;
@@ -480,7 +509,9 @@ const A={
   else{const id=d.k.slice(1);S.people=S.people.filter(p=>p.id!=id);S.races.forEach(r=>delete r.pk[id]);if(pid==id)pid=(S.people[0]||{}).id}
   dirty=true},
  /* login, senha */
- login(){dlg='login';dmsg='';um=false},dclose(){dlg='';dmsg=''},umenu(){um=!um},pw(){dlg='pw';dmsg='';um=false},
+ login(){dlg='login';dmsg='';um=false},cfgopen(){dlg='cfg';dmsg='';um=false},
+ async cfgtoggle(){const v=!CA.auto;try{await F.setDoc(F.doc(db,'config','geral'),{autoEncerrar:v});CA={auto:v};dmsg=''}catch(x){dmsg=errMsg(x)}},
+dclose(){dlg='';dmsg=''},umenu(){um=!um},pw(){dlg='pw';dmsg='';um=false},
  async dologin(){lastU=val('lu');const p=$('lp').value;if(!lastU||!p){dmsg='Digite usuário e senha';return}
   try{await F.signInWithEmailAndPassword(auth,toEmail(lastU),p);dlg='';dmsg='';lastU='';mode='pk'}catch(x){dmsg=errMsg(x)}},
  async logout(){um=false;edit=false;if(NTK()){await A.ntoff();msg=""}await F.signOut(auth)},
@@ -540,7 +571,8 @@ const A={
   const r=S.races[ri],b=`temporadas/${S.y}/corridas/${r.id}`;
   if(dirty){msg='Salve as alterações antes de reabrir';return}
   if(done(r)){msg='Apague o resultado oficial antes de reabrir os palpites';return}
-  try{const bt=F.writeBatch(db);Object.keys(r.pk).forEach(k=>{const pk=pad6(r.pk[k]).map(x=>x||SP);if(pk.every(x=>x==SP))return;bt.set(F.doc(db,b+'/palpites/'+k),{picks:pk,em:F.serverTimestamp()})});await bt.commit();
+  try{await F.setDoc(F.doc(db,'fechamentos',S.y+'_'+r.id),{reaberto:true},{merge:true});/* o automático não mexe mais nesta corrida (e a trava das regras sai) */
+   const bt=F.writeBatch(db);Object.keys(r.pk).forEach(k=>{const pk=pad6(r.pk[k]).map(x=>x||SP);if(pk.every(x=>x==SP))return;bt.set(F.doc(db,b+'/palpites/'+k),{picks:pk,em:F.serverTimestamp()})});await bt.commit();
    await F.updateDoc(F.doc(db,b),{palpitesEncerrados:false,pk:F.deleteField()});
    await load(true);msg='🔓 Palpites reabertos'}
   catch(x){msg=errMsg(x)}},
