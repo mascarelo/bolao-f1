@@ -8,8 +8,9 @@ const fs = require('fs');
 const SITE = 'https://mascarelo.github.io/bolao-f1/';
 const PTS = [5, 25, 18, 15, 12, 10], SP = 'Sem palpites';
 const H = 36e5;
-// janela de tolerancia (o GitHub pode atrasar): passou disso, o lembrete daquele horario e pulado
-const LEMB = [{ k: 'l15', h: 15, tol: 60 * 6e4 }, { k: 'l8', h: 8, tol: 60 * 6e4 }, { k: 'l1', h: 1, tol: 25 * 6e4 }];
+// janela de tolerancia (o GitHub pode atrasar): passou disso, o lembrete daquele horario e pulado.
+// O de 1h vale ate 15 min antes do 1o treino (sempre antes do encerramento automatico, 5 min antes).
+const LEMB = [{ k: 'l15', h: 15, tol: 60 * 6e4 }, { k: 'l8', h: 8, tol: 60 * 6e4 }, { k: 'l1', h: 1, tol: 45 * 6e4 }];
 
 const AGK = [[/bahrein|bahrain/i, /bahrain|sakhir/i], [/arábia|arabia/i, /saudi|jeddah/i], [/austrália|australia/i, /austral|melbourne/i], [/japão|japan/i, /japan|suzuka/i], [/china/i, /chin|shanghai/i], [/miami/i, /miami/i], [/emilia/i, /emilia|imola/i], [/mônaco|monaco/i, /monaco|monte/i], [/canadá|canada/i, /canad|montr/i], [/madri/i, /madrid|madring/i], [/barcelona/i, /barcelona|catalunya|montmel/i], [/espanha/i, /spain|spanish/i], [/áustria|austria/i, /austria|spielberg/i], [/inglaterra|britain|reino/i, /british|silverstone|great britain/i], [/hungria/i, /hungar|budapest/i], [/bélgica|belgica/i, /belg|\bspa\b/i], [/holanda/i, /dutch|netherlands|zandvoort/i], [/itália|italia/i, /italian|monza/i], [/azerbaij/i, /azerbaijan|baku/i], [/singapura/i, /singap/i], [/estados unidos/i, /united states|austin/i], [/méxico|mexico/i, /mexic/i], [/são paulo|sao paulo|brasil/i, /paulo|brazil|interlagos/i], [/las vegas/i, /vegas/i], [/catar|qatar/i, /qatar|lusail/i], [/abu dhabi/i, /abu dhabi|yas/i]];
 function casar(rounds, races, idx) {
@@ -52,15 +53,16 @@ function textoRestante(ms) {
   if (m >= 50) return '1 hora';
   return plural(Math.max(m, 1), 'minuto', 'minutos');
 }
-function quando(t, agora) {
-  const hh = t.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', hour12: false });
-  const dia = brData(t) === brData(agora) ? 'hoje' : brData(t) === brData(new Date(agora.getTime() + 24 * H)) ? 'amanhã' : t.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', weekday: 'long' }).replace(/-feira/, '');
-  return dia + ', ' + hh;
+function diaDe(t, agora) {
+  return brData(t) === brData(agora) ? 'hoje' : brData(t) === brData(new Date(agora.getTime() + 24 * H)) ? 'amanhã' : t.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo', weekday: 'long' }).replace(/-feira/, '');
 }
+const horaDe = (t) => t.toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', hour12: false });
+const quando = (t, agora) => diaDe(t, agora) + ', ' + horaDe(t);
+const quandoAs = (t, agora) => diaDe(t, agora) + ' às ' + horaDe(t);
 
-async function rodar({ db, messaging, agora, simular, agendaDir, log = console.log }) {
-  const saida = [];
-  async function enviar(tokens, msg, descricao) {
+// Devolve a funcao que manda uma notificacao para uma lista de aparelhos (e limpa os aparelhos que nao existem mais)
+function criarEnviar({ db, messaging, simular, log, saida }) {
+  return async function enviar(tokens, msg, descricao) {
     if (!tokens.length) return;
     saida.push({ para: tokens.length, ...msg, descricao });
     log('ENVIO: ' + msg.title + ' | ' + msg.body + ' -> ' + tokens.length + ' aparelho(s) [' + descricao + ']');
@@ -76,7 +78,41 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
         if (c === 'messaging/registration-token-not-registered' || c === 'messaging/invalid-registration-token') await db.doc('dispositivos/' + lote[j]).delete().catch(() => {});
       }));
     }
+  };
+}
+
+// Reserva um aviso de forma atomica (dois processos ao mesmo tempo nunca mandam o mesmo aviso duas vezes). true = pode enviar.
+async function reservar(db, chaveAviso, agora) {
+  const ref = db.doc('avisos/estado');
+  return db.runTransaction(async (tx) => {
+    const d = await tx.get(ref);
+    const env = d.exists ? (d.data().enviados || {}) : {};
+    if (env[chaveAviso]) return false;
+    tx.set(ref, { enviados: { [chaveAviso]: agora.toISOString() }, base: true }, { merge: true });
+    return true;
+  });
+}
+
+// Aviso "Palpites encerrados": vale para os dois caminhos (botao do admin, visto na rotina, e encerramento automatico, na hora)
+async function avisarEncerrados({ db, messaging, agora, simular, log = console.log, saida = [] }) {
+  const est = await db.doc('avisos/estado').get();
+  if (!est.exists || !est.data().base) return saida; // primeira execucao: a rotina registra o passado antes
+  const ts0 = await db.collection('temporadas').get(); if (!ts0.size) return saida;
+  const y = ts0.docs.sort((a, b) => +a.id - +b.id)[ts0.size - 1].id;
+  const races = (await db.collection('temporadas/' + y + '/corridas').get()).docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (a.id < b.id ? -1 : 1));
+  const devs = (await db.collection('dispositivos').get()).docs.map((d) => d.data());
+  const enviar = criarEnviar({ db, messaging, simular, log, saida });
+  for (const r of races) {
+    if (!(r.palpitesEncerrados && r.st !== 'x')) continue;
+    if (!(await reservar(db, chave('enc', y, r.id), agora))) continue;
+    await enviar(devs.filter((d) => d.token && d.prefs && d.prefs.enc === true).map((d) => d.token), { title: '🔒 Palpites encerrados', body: r.n + '. Veja o que cada um apostou.' }, 'enc ' + r.id);
   }
+  return saida;
+}
+
+async function rodar({ db, messaging, agora, simular, agendaDir, log = console.log }) {
+  const saida = [];
+  const enviar = criarEnviar({ db, messaging, simular, log, saida });
 
   const estadoRef = db.doc('avisos/estado');
   const est = await estadoRef.get();
@@ -98,14 +134,8 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
   const devs = (await db.collection('dispositivos').get()).docs.map((d) => d.data());
   const com = (k) => devs.filter((d) => d.token && d.prefs && d.prefs[k] === true);
 
-  // 1) palpites encerrados
-  for (const r of races) {
-    const k = chave('enc', y, r.id);
-    if (r.palpitesEncerrados && r.st !== 'x' && !enviados[k]) {
-      await enviar(com('enc').map((d) => d.token), { title: '🔒 Palpites encerrados', body: r.n + '. Veja o que cada um apostou.' }, 'enc ' + r.id);
-      await marcar([k]);
-    }
-  }
+  // 1) palpites encerrados (o encerramento automatico ja avisa na hora; aqui entram os encerrados pelo botao)
+  await avisarEncerrados({ db, messaging, agora, simular, log, saida });
   // 2) resultado e pontos
   const tot = {}; pessoas.forEach((p) => { tot[p.id] = 0; });
   races.filter(done).forEach((r) => pessoas.forEach((p) => { tot[p.id] += pontos(r, p.id); }));
@@ -123,35 +153,45 @@ async function rodar({ db, messaging, agora, simular, agendaDir, log = console.l
       await marcar([k]);
     }
   }
-  // 3) lembretes de palpite (quem nao enviou nada: "Falta seu palpite"; quem salvou incompleto: "Seu palpite esta incompleto"; completo nao recebe)
+  // 3) lembretes de palpite (15h e 8h: so quem nao enviou nada ("Falta seu palpite") ou salvou incompleto ("Seu palpite esta incompleto");
+  //    1h: TODOS que ativaram, inclusive quem ja esta completo)
   const abertas = races.map((r, i) => [r, i]).filter(([r]) => !r.palpitesEncerrados && r.st !== 'x');
   if (abertas.length) {
     const rounds = await calendario(y, agendaDir);
     if (!rounds) log('Sem calendario: lembretes pulados.');
-    else for (const [r, i] of abertas) {
-      const x = casar(rounds, races, i); const t = x && primeiroTreino(x); if (!t) continue;
-      const dt = t - agora; if (dt <= 0) continue;
-      for (const L of LEMB) {
-        if (!(dt <= L.h * H && dt > L.h * H - L.tol)) continue;
-        const picksDe = {};
-        (await db.collection('temporadas/' + y + '/corridas/' + r.id + '/palpites').get()).docs.forEach((d) => { picksDe[d.id] = (d.data() || {}).picks || []; });
-        const alvo = {};
-        for (const d of com(L.k)) { if (!d.pessoa || enviados[chave('lem', L.k, y, r.id, d.pessoa)]) continue; (alvo[d.pessoa] = alvo[d.pessoa] || []).push(d.token); }
-        for (const pid of Object.keys(alvo)) {
-          const vazias = vazio(picksDe[pid]);
-          if (picksDe[pid] && vazias.length === 0) continue; // palpite completo: nao avisa
-          const inc = picksDe[pid] && vazias.length < 6; // salvou, mas faltam posicoes
-          const resto = textoRestante(dt);
-          let title, body;
-          if (!inc) {
-            title = L.h === 1 ? '⏰ Última chamada' : '⏰ Falta seu palpite';
-            body = L.h === 1 ? r.n + ': o 1º treino começa em ' + resto + '.' : r.n + ': o 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
-          } else {
-            title = L.h === 1 ? '⏰ Última chamada' : '⏰ Seu palpite está incompleto';
-            body = L.h === 1 ? r.n + ': ' + faltaTexto(vazias) + '. O 1º treino começa em ' + resto + '.' : r.n + ': ' + faltaTexto(vazias) + '. O 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
+    else {
+      const cfg = await db.doc('config/geral').get();
+      const auto = cfg.exists && cfg.data().autoEncerrar === true;
+      for (const [r, i] of abertas) {
+        const x = casar(rounds, races, i); const t = x && primeiroTreino(x); if (!t) continue;
+        const dt = t - agora; if (dt <= 0) continue;
+        for (const L of LEMB) {
+          if (!(dt <= L.h * H && dt > L.h * H - L.tol)) continue;
+          const picksDe = {};
+          (await db.collection('temporadas/' + y + '/corridas/' + r.id + '/palpites').get()).docs.forEach((d) => { picksDe[d.id] = (d.data() || {}).picks || []; });
+          const alvo = {};
+          for (const d of com(L.k)) { if (!d.pessoa || enviados[chave('lem', L.k, y, r.id, d.pessoa)]) continue; (alvo[d.pessoa] = alvo[d.pessoa] || []).push(d.token); }
+          for (const pid of Object.keys(alvo)) {
+            const vazias = vazio(picksDe[pid]);
+            const completo = !!picksDe[pid] && vazias.length === 0;
+            if (completo && L.h !== 1) continue; // 15h e 8h: quem esta completo nao recebe
+            const inc = !!picksDe[pid] && vazias.length > 0 && vazias.length < 6; // salvou, mas faltam posicoes
+            const resto = textoRestante(dt);
+            const fecha = auto ? quandoAs(new Date(t.getTime() - 5 * 6e4), agora) : null; // hora do encerramento automatico
+            let title, body;
+            if (completo) {
+              title = '⏰ Última chamada';
+              body = r.n + ': seu palpite está completo ✔. ' + (fecha ? 'Os palpites encerram ' + fecha + '.' : 'O 1º treino começa em ' + resto + '.');
+            } else if (!inc) {
+              title = L.h === 1 ? '⏰ Última chamada' : '⏰ Falta seu palpite';
+              body = L.h === 1 ? r.n + ': o 1º treino começa em ' + resto + '.' + (fecha ? ' Palpites encerram ' + fecha + '.' : '') : r.n + ': o 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
+            } else {
+              title = L.h === 1 ? '⏰ Última chamada' : '⏰ Seu palpite está incompleto';
+              body = L.h === 1 ? r.n + ': ' + faltaTexto(vazias) + '. O 1º treino começa em ' + resto + '.' + (fecha ? ' Palpites encerram ' + fecha + '.' : '') : r.n + ': ' + faltaTexto(vazias) + '. O 1º treino é em ' + resto + ' (' + quando(t, agora) + ').';
+            }
+            await enviar(alvo[pid], { title, body }, L.k + ' ' + r.id + ' ' + pid + (completo ? ' completo' : inc ? ' incompleto' : ''));
+            await marcar([chave('lem', L.k, y, r.id, pid)]);
           }
-          await enviar(alvo[pid], { title, body }, L.k + ' ' + r.id + ' ' + pid + (inc ? ' incompleto' : ''));
-          await marcar([chave('lem', L.k, y, r.id, pid)]);
         }
       }
     }
@@ -189,5 +229,5 @@ async function main() {
   await rodar({ db, messaging, agora, simular, agendaDir: process.env.AGENDA_DIR });
 }
 const log2 = (s) => console.log(s);
-module.exports = { rodar, casar, primeiroTreino, teste, faltaTexto, vazio };
+module.exports = { rodar, casar, primeiroTreino, calendario, teste, faltaTexto, vazio, avisarEncerrados, criarEnviar, reservar, chave, quandoAs };
 if (require.main === module) main().catch((e) => { console.error('ERRO', e.message); process.exit(1); });
