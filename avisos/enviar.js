@@ -226,6 +226,7 @@ async function main() {
   const agora = process.env.AGORA ? new Date(process.env.AGORA) : new Date();
   const simular = !!process.env.SIMULAR || emu;
   if (process.argv[2] === 'teste') { await teste({ db, messaging, simular, alvo: process.argv[3], mensagem: process.env.MENSAGEM }); return; }
+  try { await require('./pilotos.js').sincronizar({ db, agora, simular }); } catch (e) { console.log('Pilotos: erro (segue com os avisos): ' + e.message); }
   await rodar({ db, messaging, agora, simular, agendaDir: process.env.AGENDA_DIR });
 }
 const log2 = (s) => console.log(s);

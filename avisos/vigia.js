@@ -21,7 +21,7 @@ function fimDaJanela(agora) {
   return new Date(f.getTime() - BRT);
 }
 
-async function vigiar({ db, messaging, agendaDir, simular, log = console.log, agora = () => new Date(), duracao = DURACAO, tick = TICK, debounce = DEBOUNCE, sempre = false, aoRodar = () => {} }) {
+async function vigiar({ db, messaging, agendaDir, simular, log = console.log, agora = () => new Date(), duracao = DURACAO, tick = TICK, debounce = DEBOUNCE, sempre = false, aoRodar = () => {}, sincronizar = (x) => require('./pilotos.js').sincronizar(x) }) {
   const fimJ = sempre ? null : fimDaJanela(agora());
   if (!sempre && !fimJ) { log('Fora da janela de vigia (quinta a segunda 12h): nada a fazer. O robo normal cuida dos avisos.'); return { turnos: 0 }; }
   const ts = await db.collection('temporadas').get();
@@ -37,6 +37,7 @@ async function vigiar({ db, messaging, agendaDir, simular, log = console.log, ag
     try {
       do {
         pendente = false; n++;
+        if (sincronizar) { try { await sincronizar({ db, agora: agora(), simular, log }); } catch (e) { log('Pilotos: erro (' + e.message + ')'); } }
         try { const s = await rodar({ db, messaging, agora: agora(), simular, agendaDir, log: () => {} }); s.forEach((x) => log('Enviado: ' + x.title + ' (' + x.para + ' aparelho(s))')); aoRodar(s); }
         catch (e) { log('Erro na conferencia (segue vigiando): ' + e.message); }
       } while (pendente);
