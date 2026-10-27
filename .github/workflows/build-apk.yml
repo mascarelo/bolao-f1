@@ -2,12 +2,10 @@ name: Gerar APK
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [novo-codigo]
   push:
     paths:
-      - 'index.html'
-      - 'package.json'
-      - 'capacitor.config.json'
-      - 'icon.png'
       - '.github/workflows/build-apk.yml'
 
 permissions:
@@ -18,6 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Buscar o código do app no repositório privado
+        uses: actions/checkout@v4
+        with:
+          repository: mascarelo/bolao-f1-codigo
+          token: ${{ secrets.PAT_CODIGO }}
+          path: fonte
+      - name: Copiar o código para a pasta de trabalho
+        run: |
+          for f in index.html package.json capacitor.config.json icon.png; do
+            test -f "fonte/$f" || { echo "ERRO: faltou $f no repositório privado"; exit 1; }
+            cp "fonte/$f" .
+          done
+          rm -rf fonte
       - uses: actions/setup-node@v4
         with:
           node-version: 22
