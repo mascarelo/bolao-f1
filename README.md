@@ -2,7 +2,7 @@
 
 Bolão de palpites de Fórmula 1 entre amigos. Cada um palpita o grid de cada corrida, o resultado oficial é lançado e o ranking da temporada se atualiza sozinho.
 
-**🌐 Acesse:** https://mascarelo.github.io/bolao-f1/
+**🌐 Acesse:** https://bolao-f1-ez0.pages.dev/
 **📱 App Android:** baixe o `.apk` mais recente em [Releases](https://github.com/mascarelo/bolao-f1/releases/latest)
 
 ---
@@ -47,14 +47,14 @@ Pontua somente quem acertar a **posição exata**. Corrida cancelada não vale p
 | App Android | [Capacitor](https://capacitorjs.com/), gerado pela Action **Gerar APK** |
 | Banco de dados e login | Firebase (Firestore + Authentication) |
 | Notificações | Firebase Cloud Messaging |
-| Hospedagem | GitHub Pages |
+| Hospedagem do site | Cloudflare Pages (o código fica num repositório privado) |
 | Automações | GitHub Actions (avisos, encerramento, vigia de resultado, sincronização de pilotos, backup, testes) |
 
 ### 📁 Arquivos principais
 
 | Arquivo / pasta | Para que serve |
 |---|---|
-| `index.html` | O bolão inteiro (site + app) |
+| `avisos/` e `.github/workflows/` | Robôs e a geração do APK (o código do app fica em repositório privado) |
 | `.github/workflows/` | Automações: gerar APK, enviar avisos, fechar palpites, vigia, backup |
 | `avisos/` | Scripts que enviam as notificações e atualizam pilotos/resultados |
 | `capacitor.config.json` | Configuração do app Android |
@@ -62,9 +62,9 @@ Pontua somente quem acertar a **posição exata**. Corrida cancelada não vale p
 
 ## 🚀 Publicando uma nova versão
 
-1. Suba o novo `index.html` na raiz do repositório (**Add file → Upload files → Commit changes**).
-2. Aguarde a Action **Gerar APK** ficar verde na aba **Actions**.
-3. Pronto: o site já está atualizado e o app mostra o aviso **Atualizar agora**.
+1. Suba o novo `index.html` no repositório privado do código (**Add file → Upload files → Commit changes**).
+2. O site é atualizado sozinho pelo Cloudflare Pages, e o **Gerar APK** é disparado automaticamente neste repositório.
+3. Aguarde o **Gerar APK** ficar verde na aba **Actions**: o app mostra o aviso **Atualizar agora**.
 
 Cada versão do app é uma release com tag `apk-N`; o número aparece em **Configurações → Sobre**.
 
