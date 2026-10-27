@@ -5,7 +5,7 @@
 // Variaveis: GOOGLE_APPLICATION_CREDENTIALS (chave) | FIRESTORE_EMULATOR_HOST (teste) | SIMULAR=1 (nao envia, so mostra)
 //            AGORA=<ISO> (relogio de teste) | AGENDA_DIR=<pasta com jolpica_AAAA.json> (calendario de teste)
 const fs = require('fs');
-const SITE = 'https://mascarelo.github.io/bolao-f1/';
+const SITE = 'https://bolao-f1-ez0.pages.dev/';
 const PTS = [5, 25, 18, 15, 12, 10], SP = 'Sem palpites';
 const H = 36e5;
 // janela de tolerancia (o GitHub pode atrasar): passou disso, o lembrete daquele horario e pulado.
