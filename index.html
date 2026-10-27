@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bolão F1 mudou de endereço</title>
+<meta http-equiv="refresh" content="4;url=https://bolao-f1-ez0.pages.dev/">
+<style>body{font-family:system-ui,sans-serif;background:#e00700;color:#fff;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center;padding:24px}a{color:#fff;font-weight:700}</style>
+</head>
+<body>
+<div>
+<h1>🏁 Bolão F1</h1>
+<p>O bolão mudou de endereço.<br>Levando você para o novo site…</p>
+<p><a href="https://bolao-f1-ez0.pages.dev/">bolao-f1-ez0.pages.dev</a></p>
+<p style="opacity:.85;font-size:14px">Se você usava as notificações aqui, entre no novo site e ative de novo em Configurações.</p>
+</div>
+<script>
+/* Limpa o que ficou registrado neste endereço antigo (service worker e inscrição de notificações) e segue para o novo */
+(async()=>{
+ try{
+  if('serviceWorker' in navigator){
+   const rs=await navigator.serviceWorker.getRegistrations();
+   for(const r of rs){try{const s=await r.pushManager.getSubscription();if(s)await s.unsubscribe()}catch(_){}try{await r.unregister()}catch(_){}}
+  }
+ }catch(_){}
+ setTimeout(()=>location.replace('https://bolao-f1-ez0.pages.dev/'),1200);
+})();
+</script>
+</body>
+</html>
