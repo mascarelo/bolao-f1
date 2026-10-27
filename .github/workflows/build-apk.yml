@@ -32,6 +32,7 @@ jobs:
         run: |
           mkdir -p www
           cp index.html www/
+          echo '{"build": ${{ github.run_number }}}' > www/versao.json
           npm install
           npx cap add android
           npx cap sync android
@@ -58,6 +59,183 @@ jobs:
               for n in ('ic_launcher', 'ic_launcher_round', 'ic_launcher_foreground'):
                   r.save(f'{p}/{n}.png')
           PY
+      - name: Atualização dentro do app (baixa o APK novo e abre o instalador do Android)
+        run: |
+          mkdir -p android/app/src/main/java/com/bolao/f1 android/app/src/main/res/xml
+          cat > android/app/src/main/java/com/bolao/f1/AtualizadorPlugin.java <<'JAVA'
+          package com.bolao.f1;
+
+          import android.content.Intent;
+          import android.net.Uri;
+          import android.os.Build;
+          import android.provider.Settings;
+          import androidx.core.content.FileProvider;
+          import com.getcapacitor.JSObject;
+          import com.getcapacitor.Plugin;
+          import com.getcapacitor.PluginCall;
+          import com.getcapacitor.PluginMethod;
+          import com.getcapacitor.annotation.CapacitorPlugin;
+          import java.io.BufferedInputStream;
+          import java.io.File;
+          import java.io.FileOutputStream;
+          import java.io.IOException;
+          import java.io.InputStream;
+          import java.io.OutputStream;
+          import java.net.HttpURLConnection;
+          import java.net.URL;
+
+          @CapacitorPlugin(name = "Atualizador")
+          public class AtualizadorPlugin extends Plugin {
+              private volatile boolean cancelado = false;
+
+              private File arquivo() {
+                  File dir = new File(getContext().getCacheDir(), "atualizacao");
+                  if (!dir.exists()) dir.mkdirs();
+                  return new File(dir, "lista-de-mercado.apk");
+              }
+
+              @PluginMethod
+              public void podeInstalar(PluginCall call) {
+                  boolean ok = Build.VERSION.SDK_INT < Build.VERSION_CODES.O
+                      || getContext().getPackageManager().canRequestPackageInstalls();
+                  JSObject r = new JSObject();
+                  r.put("value", ok);
+                  call.resolve(r);
+              }
+
+              @PluginMethod
+              public void abrirPermissao(PluginCall call) {
+                  try {
+                      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                          Intent i = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                              Uri.parse("package:" + getContext().getPackageName()));
+                          i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                          getContext().startActivity(i);
+                      }
+                      call.resolve();
+                  } catch (Exception e) {
+                      call.reject("Não consegui abrir a tela de permissão: " + e.getMessage());
+                  }
+              }
+
+              @PluginMethod
+              public void baixar(final PluginCall call) {
+                  final String endereco = call.getString("url");
+                  if (endereco == null || endereco.isEmpty()) { call.reject("Endereço do APK não informado"); return; }
+                  cancelado = false;
+                  new Thread(new Runnable() {
+                      @Override
+                      public void run() {
+                          HttpURLConnection c = null;
+                          File tmp = null;
+                          try {
+                              URL u = new URL(endereco);
+                              // o GitHub redireciona para outro servidor: segue até 8 redirecionamentos
+                              for (int i = 0; ; i++) {
+                                  c = (HttpURLConnection) u.openConnection();
+                                  c.setInstanceFollowRedirects(false);
+                                  c.setConnectTimeout(20000);
+                                  c.setReadTimeout(30000);
+                                  c.setRequestProperty("User-Agent", "ListaDeMercado-Android");
+                                  int code = c.getResponseCode();
+                                  if (code >= 300 && code < 400 && i < 8) {
+                                      String loc = c.getHeaderField("Location");
+                                      c.disconnect();
+                                      if (loc == null) throw new IOException("Redirecionamento sem destino");
+                                      u = new URL(u, loc);
+                                      continue;
+                                  }
+                                  if (code != 200) throw new IOException("O servidor respondeu " + code);
+                                  break;
+                              }
+                              long total = c.getContentLengthLong();
+                              File destino = arquivo();
+                              tmp = new File(destino.getPath() + ".parcial");
+                              InputStream in = new BufferedInputStream(c.getInputStream());
+                              OutputStream out = new FileOutputStream(tmp);
+                              try {
+                                  byte[] buf = new byte[65536];
+                                  long lidos = 0;
+                                  int n, ultimo = -2;
+                                  long ultimoAviso = 0;
+                                  while ((n = in.read(buf)) != -1) {
+                                      if (cancelado) throw new IOException("cancelado");
+                                      out.write(buf, 0, n);
+                                      lidos += n;
+                                      int pct = total > 0 ? (int) (lidos * 100 / total) : -1;
+                                      long agora = System.currentTimeMillis();
+                                      if (pct != ultimo || (pct < 0 && agora - ultimoAviso > 300)) {
+                                          ultimo = pct;
+                                          ultimoAviso = agora;
+                                          JSObject p = new JSObject();
+                                          p.put("pct", pct);
+                                          p.put("baixados", lidos);
+                                          p.put("total", total);
+                                          notifyListeners("progresso", p);
+                                      }
+                                  }
+                              } finally {
+                                  try { in.close(); } catch (Exception ignored) {}
+                                  try { out.close(); } catch (Exception ignored) {}
+                              }
+                              if (destino.exists()) destino.delete();
+                              if (!tmp.renameTo(destino)) throw new IOException("Não consegui salvar o arquivo baixado");
+                              JSObject r = new JSObject();
+                              r.put("tamanho", destino.length());
+                              call.resolve(r);
+                          } catch (Exception e) {
+                              if (tmp != null && tmp.exists()) tmp.delete();
+                              String m = e.getMessage();
+                              call.reject(m == null || m.isEmpty() ? "Erro no download" : m);
+                          } finally {
+                              if (c != null) c.disconnect();
+                          }
+                      }
+                  }).start();
+              }
+
+              @PluginMethod
+              public void cancelar(PluginCall call) {
+                  cancelado = true;
+                  call.resolve();
+              }
+
+              @PluginMethod
+              public void instalar(PluginCall call) {
+                  try {
+                      File f = arquivo();
+                      if (!f.exists()) { call.reject("Arquivo da atualização não encontrado"); return; }
+                      Uri uri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", f);
+                      Intent i = new Intent(Intent.ACTION_VIEW);
+                      i.setDataAndType(uri, "application/vnd.android.package-archive");
+                      i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                      getContext().startActivity(i);
+                      call.resolve();
+                  } catch (Exception e) {
+                      call.reject("Não consegui abrir o instalador: " + e.getMessage());
+                  }
+              }
+          }
+          JAVA
+          # pastas que o instalador pode ler (inclui a pasta de cache onde o APK é baixado)
+          cat > android/app/src/main/res/xml/file_paths.xml <<'XML'
+          <?xml version="1.0" encoding="utf-8"?>
+          <paths xmlns:android="http://schemas.android.com/apk/res/android">
+              <external-path name="my_images" path="." />
+              <cache-path name="my_cache_images" path="." />
+          </paths>
+          XML
+          # permissão para pedir a instalação de atualizações
+          python3 - <<'PY'
+          p = 'android/app/src/main/AndroidManifest.xml'
+          s = open(p, encoding='utf-8').read()
+          perm = '<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />'
+          if 'REQUEST_INSTALL_PACKAGES' not in s:
+              s = s.replace('<application', perm + '\n    <application', 1)
+          open(p, 'w', encoding='utf-8').write(s)
+          PY
+          grep -q REQUEST_INSTALL_PACKAGES android/app/src/main/AndroidManifest.xml
+          grep -q 'androidx.core.content.FileProvider' android/app/src/main/AndroidManifest.xml || { echo "ERRO: o projeto Android não tem o FileProvider esperado"; exit 1; }
       - name: Ajustar bordas da tela (barra de navegação do Android)
         run: |
           cat > android/app/src/main/java/com/bolao/f1/MainActivity.java <<'JAVA'
@@ -79,6 +257,7 @@ jobs:
           public class MainActivity extends BridgeActivity {
               @Override
               public void onCreate(Bundle savedInstanceState) {
+                  registerPlugin(AtualizadorPlugin.class); // atualização do app sem passar pelo navegador
                   super.onCreate(savedInstanceState);
                   View root = findViewById(android.R.id.content);
                   root.setBackgroundColor(0xFF0F0F14);
