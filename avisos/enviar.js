@@ -71,7 +71,7 @@ function criarEnviar({ db, messaging, simular, log, saida }) {
       const lote = tokens.slice(i, i + 500);
       const r = await messaging.sendEachForMulticast({
         tokens: lote, notification: { title: msg.title, body: msg.body }, data: { url: SITE },
-        webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } },
+        webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } }, android: { priority: 'high' },
       });
       await Promise.all(r.responses.map(async (x, j) => {
         const c = x.error && x.error.code;
@@ -209,7 +209,7 @@ async function teste({ db, messaging, simular, alvo, mensagem }) {
   const notification = msg ? { title: '💸 Bolão F1', body: msg } : { title: '🔔 Teste do Bolão', body: 'Se você está lendo isto, as notificações funcionam neste aparelho.' };
   log2('Destino: ' + lista.join(', ') + ' | aparelhos encontrados: ' + tokens.length + ' | texto: ' + notification.body);
   if (tokens.length && !simular) {
-    const r = await messaging.sendEachForMulticast({ tokens, notification, data: { url: SITE }, webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } } });
+    const r = await messaging.sendEachForMulticast({ tokens, notification, data: { url: SITE }, webpush: { fcmOptions: { link: SITE }, notification: { icon: SITE + 'icon.png' } }, android: { priority: 'high' } });
     log2('Enviadas: ' + r.successCount + ' ok, ' + r.failureCount + ' com erro');
     r.responses.forEach((x) => { if (x.error) log2('  erro: ' + x.error.code); });
   }

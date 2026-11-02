@@ -47,6 +47,40 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+      - name: Ligar as notificações do app (configuração do Firebase para o app Android)
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          test -n "$SA" || { echo "::error::Faltou o segredo FIREBASE_SERVICE_ACCOUNT"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/fb" && cd "$RUNNER_TEMP/fb" && npm init -y >/dev/null && npm install firebase-admin >/dev/null 2>&1
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          cat > gs.js <<'JS'
+          const { initializeApp, cert } = require('firebase-admin/app');
+          const fs = require('fs');
+          (async () => {
+            const key = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, 'utf8'));
+            const app = initializeApp({ credential: cert(key) });
+            const tk = (await app.options.credential.getAccessToken()).access_token;
+            const H = { Authorization: 'Bearer ' + tk };
+            const base = 'https://firebase.googleapis.com/v1beta1/projects/' + key.project_id;
+            const j = await (await fetch(base + '/androidApps', { headers: H })).json();
+            const a = (j.apps || []).find((x) => x.packageName === 'com.bolao.f1');
+            if (!a) throw new Error('app Android com.bolao.f1 nao existe no Firebase');
+            const c = await (await fetch('https://firebase.googleapis.com/v1beta1/' + a.name + '/config', { headers: H })).json();
+            if (!c.configFileContents) throw new Error('sem configFileContents: ' + JSON.stringify(c).slice(0, 200));
+            fs.writeFileSync(process.env.DEST, Buffer.from(c.configFileContents, 'base64'));
+          })().catch((e) => { console.log('::error::google-services.json: ' + e.message); process.exit(1); });
+          JS
+          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" DEST="$GITHUB_WORKSPACE/android/app/google-services.json" node gs.js
+          rm -f "$RUNNER_TEMP/sa.json"
+          cd "$GITHUB_WORKSPACE"
+          grep -q '"com.bolao.f1"' android/app/google-services.json || { echo "::error::google-services.json sem o pacote com.bolao.f1"; exit 1; }
+          grep -q "com.google.gms:google-services" android/build.gradle || { echo "::error::android/build.gradle sem o plugin google-services"; sed -n 1,30p android/build.gradle | sed 's/^/::notice::/'; exit 1; }
+          grep -q "google-services" android/app/build.gradle || { echo "::error::android/app/build.gradle nao aplica google-services"; exit 1; }
+          m=android/app/src/main/AndroidManifest.xml
+          grep -q "android.permission.POST_NOTIFICATIONS" "$m" || sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>\n    <application#' "$m"
+          grep -q "android.permission.POST_NOTIFICATIONS" "$m" || { echo "::error::nao consegui declarar POST_NOTIFICATIONS"; exit 1; }
+          echo "Notificações do app: configuradas"
       - name: Numerar a versão do app (o Android só atualiza por cima se o número aumentar)
         run: |
           f=android/app/build.gradle
