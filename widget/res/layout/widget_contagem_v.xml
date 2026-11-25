@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/wg_root" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@drawable/widget_bg" android:padding="12dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <LinearLayout android:id="@+id/wg_left" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <ImageView android:id="@+id/wg_logo" android:layout_width="30dp" android:layout_height="30dp" android:layout_marginEnd="8dp" android:src="@drawable/widget_logo" android:contentDescription="Bolão F1" />
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                <TextView android:id="@+id/wg_titulo" android:layout_width="match_parent" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="16sp" android:textColor="@color/wg_text" android:maxLines="1" android:ellipsize="end" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <TextView android:id="@+id/wg_sub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="6dp" android:textSize="11sp" android:textColor="@color/wg_sub" android:maxLines="1" />
+                    <TextView android:id="@+id/wg_data" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="12sp" android:textColor="@color/wg_accent" android:maxLines="1" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/wg_right" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="6dp" android:orientation="horizontal">
+            <LinearLayout android:id="@+id/crd" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <TextView android:id="@+id/cnd" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="38sp" android:textColor="@color/wg_accent" android:maxLines="1" />
+                <TextView android:id="@+id/cud" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="@color/wg_sub" android:maxLines="1" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/crh" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <TextView android:id="@+id/cnh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="38sp" android:textColor="@color/wg_text" android:maxLines="1" />
+                <TextView android:id="@+id/cuh" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="@color/wg_sub" android:maxLines="1" />
+            </LinearLayout>
+            <LinearLayout android:id="@+id/crm" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <TextView android:id="@+id/cnm" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textStyle="bold" android:textSize="38sp" android:textColor="@color/wg_text" android:maxLines="1" />
+                <TextView android:id="@+id/cum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="@color/wg_sub" android:maxLines="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

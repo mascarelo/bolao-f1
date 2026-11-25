@@ -7,9 +7,24 @@ import java.util.List;
 
 /** Widget "Agenda": sessões do próximo GP, com a corrida em vermelho. */
 public class WidgetAgenda extends WidgetBase {
-    int layout() { return R.layout.widget_agenda; }
+    int layout(boolean vert) { return vert ? R.layout.widget_agenda_v : R.layout.widget_agenda; }
 
-    void preencher(Context c, RemoteViews v, WidgetDados.Gp g, long agora, float esc, int w, int h) {
+    /** Quantas linhas cabem com letra confortável (nunca menos que 2). */
+    static int linhas(int w, int h, boolean vert, int n) {
+        float util = h - 24, linha = 32f, topo = vert ? 44f : 0f;
+        int k = (int) Math.floor((util / 0.78f - topo) / linha);
+        return Math.max(Math.min(2, n), Math.min(n, Math.min(6, k)));
+    }
+
+    float escala(int w, int h, boolean vert, WidgetDados.Gp g) {
+        int n = g == null ? 5 : Math.min(g.sessoes.size(), 6);
+        int k = linhas(w, h, vert, n);
+        float eh = (h - 24) / ((vert ? 44f : 0f) + 32f * k);
+        float ew = vert ? (w - 64) / 94f : (w - 24) / 190f;
+        return lim(Math.min(eh, ew));
+    }
+
+    void preencher(Context c, RemoteViews v, WidgetDados.Gp g, long agora, float esc, int w, int h, boolean vert) {
         int[] rl = { R.id.ar0, R.id.ar1, R.id.ar2, R.id.ar3, R.id.ar4, R.id.ar5 };
         int[] dd = { R.id.ad0, R.id.ad1, R.id.ad2, R.id.ad3, R.id.ad4, R.id.ad5 };
         int[] ww = { R.id.aw0, R.id.aw1, R.id.aw2, R.id.aw3, R.id.aw4, R.id.aw5 };
@@ -18,8 +33,7 @@ public class WidgetAgenda extends WidgetBase {
         int[] db = { R.id.adb0, R.id.adb1, R.id.adb2, R.id.adb3, R.id.adb4, R.id.adb5 };
         List<WidgetDados.Sessao> ss = g.sessoes;
         int n = Math.min(ss.size(), 6);
-        int cabem = (int) Math.floor((h - 24) / (34f * esc));
-        int k = Math.max(1, Math.min(n, cabem));
+        int k = linhas(w, h, vert, n);
         int ini = ss.size() - k; // mostra as últimas (a corrida sempre aparece)
         int vermelho = c.getColor(R.color.wg_accent), texto = c.getColor(R.color.wg_text), sub = c.getColor(R.color.wg_sub);
         String anterior = "";

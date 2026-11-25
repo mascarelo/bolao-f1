@@ -17,13 +17,11 @@ import android.widget.RemoteViews;
 public abstract class WidgetBase extends AppWidgetProvider {
     static final String TICK = "com.bolao.f1.WIDGET_TICK";
 
-    abstract int layout();
-    abstract void preencher(Context c, RemoteViews v, WidgetDados.Gp g, long agora, float esc, int w, int h);
+    abstract int layout(boolean vertical);
+    abstract float escala(int w, int h, boolean vertical, WidgetDados.Gp g);
+    abstract void preencher(Context c, RemoteViews v, WidgetDados.Gp g, long agora, float esc, int w, int h, boolean vertical);
 
-    static float escala(int w, int h) {
-        float s = Math.min(w / 300f, h / 190f);
-        return Math.max(0.65f, Math.min(1.6f, s));
-    }
+    static float lim(float s) { return Math.max(0.5f, Math.min(1.9f, s)); }
 
     static void tam(RemoteViews v, int id, float sp) { v.setTextViewTextSize(id, TypedValue.COMPLEX_UNIT_SP, sp); }
 
@@ -35,17 +33,19 @@ public abstract class WidgetBase extends AppWidgetProvider {
     }
 
     void desenhar(Context c, AppWidgetManager m, int id, boolean rede) {
-        RemoteViews v = new RemoteViews(c.getPackageName(), layout());
         int[] t = tamanho(m, id);
-        float esc = escala(t[0], t[1]);
+        boolean vert = t[0] < 1.35f * t[1]; // mais alto que largo: título em cima e linhas embaixo
+        RemoteViews v = new RemoteViews(c.getPackageName(), layout(vert));
         long agora = System.currentTimeMillis();
         WidgetDados.Gp g = null;
         try { g = WidgetDados.proximo(c, agora, rede); } catch (Exception e) { /* mostra aviso abaixo */ }
+        float esc = escala(t[0], t[1], vert, g);
 
         // esconde partes quando o widget fica pequeno
-        v.setViewVisibility(R.id.wg_left, t[0] < 150 ? View.GONE : View.VISIBLE);
-        v.setViewVisibility(R.id.wg_logo, (t[0] < 230 || t[1] < 100) ? View.GONE : View.VISIBLE);
-        tam(v, R.id.wg_titulo, 16 * esc); tam(v, R.id.wg_sub, 11 * esc); tam(v, R.id.wg_data, 12 * esc);
+        v.setViewVisibility(R.id.wg_left, (!vert && t[0] < 150) ? View.GONE : View.VISIBLE);
+        v.setViewVisibility(R.id.wg_logo, (t[0] < 160 || t[1] < 90 || (!vert && t[0] < 230)) ? View.GONE : View.VISIBLE);
+        float eh = Math.min(esc, 1.5f);
+        tam(v, R.id.wg_titulo, 16 * eh); tam(v, R.id.wg_sub, 11 * eh); tam(v, R.id.wg_data, 12 * eh);
         try {
             if (g == null) {
                 v.setTextViewText(R.id.wg_titulo, "Bolão F1");
@@ -55,7 +55,7 @@ public abstract class WidgetBase extends AppWidgetProvider {
                 v.setTextViewText(R.id.wg_titulo, g.nome);
                 v.setTextViewText(R.id.wg_sub, "Corrida");
                 v.setTextViewText(R.id.wg_data, WidgetFmt.dataHora(g.corrida));
-                preencher(c, v, g, agora, esc, t[0], t[1]);
+                preencher(c, v, g, agora, esc, t[0], t[1], vert);
             }
         } catch (Exception e) { /* nunca derruba o widget */ }
 
