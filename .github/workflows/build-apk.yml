@@ -327,6 +327,41 @@ jobs:
               }
           }
           JAVA
+      - name: Widgets da tela inicial (Agenda e Contagem regressiva)
+        run: |
+          cp widget/java/*.java android/app/src/main/java/com/bolao/f1/
+          cp -r widget/res/. android/app/src/main/res/
+          python3 - <<'PY'
+          from PIL import Image, ImageDraw
+          im = Image.open('icon.png').convert('RGBA').resize((96, 96), Image.LANCZOS)
+          m = Image.new('L', (96, 96), 0)
+          ImageDraw.Draw(m).rounded_rectangle((0, 0, 95, 95), radius=22, fill=255)
+          im.putalpha(m)
+          im.save('android/app/src/main/res/drawable-nodpi/widget_logo.png')
+          p = 'android/app/src/main/AndroidManifest.xml'
+          s = open(p, encoding='utf-8').read()
+          rec = ''
+          for nome, info in (('WidgetAgenda', 'widget_agenda_info'), ('WidgetContagem', 'widget_contagem_info')):
+              rec += ('        <receiver android:name=".%s" android:exported="true" android:label="Bolão F1 · %s">\n'
+                      '            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>\n'
+                      '            <meta-data android:name="android.appwidget.provider" android:resource="@xml/%s" />\n'
+                      '        </receiver>\n') % (nome, 'Agenda' if 'Agenda' in nome else 'Contagem', info)
+          if 'WidgetAgenda' not in s:
+              s = s.replace('</application>', rec + '    </application>', 1)
+          link = ('            <intent-filter>\n'
+                  '                <action android:name="android.intent.action.VIEW" />\n'
+                  '                <category android:name="android.intent.category.DEFAULT" />\n'
+                  '                <category android:name="android.intent.category.BROWSABLE" />\n'
+                  '                <data android:scheme="bolaof1" android:host="palpites" />\n'
+                  '            </intent-filter>\n')
+          if 'bolaof1' not in s:
+              i = s.index('</activity>')
+              s = s[:i] + link + '        ' + s[i:]
+          open(p, 'w', encoding='utf-8').write(s)
+          PY
+          grep -q WidgetContagem android/app/src/main/AndroidManifest.xml
+          grep -q bolaof1 android/app/src/main/AndroidManifest.xml
+          test -f android/app/src/main/res/drawable-nodpi/widget_logo.png
       - name: Usar a chave de assinatura fixa
         env:
           CHAVE: ${{ secrets.CHAVE_ASSINATURA }}

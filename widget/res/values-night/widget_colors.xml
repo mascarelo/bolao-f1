@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="wg_bg">#FF1F1F25</color>
+    <color name="wg_text">#FFF2F2F5</color>
+    <color name="wg_sub">#FFA0A0AB</color>
+    <color name="wg_accent">#FFFF4A3D</color>
+</resources>
