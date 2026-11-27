@@ -36,6 +36,10 @@ public class WidgetAgenda extends WidgetBase {
         int k = linhas(w, h, vert, n);
         int ini = ss.size() - k; // mostra as últimas (a corrida sempre aparece)
         int vermelho = c.getColor(R.color.wg_accent), texto = c.getColor(R.color.wg_text), sub = c.getColor(R.color.wg_sub);
+        int[] gg = { R.id.ag0, R.id.ag1, R.id.ag2, R.id.ag3, R.id.ag4, R.id.ag5 };
+        int verde = c.getColor(R.color.wg_ok);
+        int nx = -1; // próxima sessão: a primeira que ainda não passou de 1 h do início (igual à lista do app)
+        for (int q = 0; q < ss.size(); q++) if (ss.get(q).t + 3600000L > agora) { nx = q; break; }
         String anterior = "";
         for (int i = 0; i < 6; i++) {
             if (i >= k) { v.setViewVisibility(rl[i], View.GONE); continue; }
@@ -49,10 +53,16 @@ public class WidgetAgenda extends WidgetBase {
             v.setTextViewText(nn[i], s.nome);
             long fim = s.t + (s.corrida ? 2L * 3600000 : 3600000);
             v.setTextViewText(tt[i], WidgetFmt.hora(s.t) + " – " + WidgetFmt.hora(fim));
-            v.setTextColor(dd[i], s.corrida ? vermelho : texto);
-            v.setTextColor(ww[i], s.corrida ? vermelho : sub);
-            v.setTextColor(nn[i], s.corrida ? vermelho : texto);
-            v.setTextColor(tt[i], s.corrida ? vermelho : sub);
+            boolean passou = s.t + 3600000L <= agora, proxima = (ini + i) == nx;
+            v.setTextColor(dd[i], ((s.corrida ? vermelho : texto) & 0x00FFFFFF) | (passou ? 0x80000000 : 0xFF000000));
+            v.setTextColor(ww[i], ((s.corrida ? vermelho : sub) & 0x00FFFFFF) | (passou ? 0x80000000 : 0xFF000000));
+            v.setTextColor(nn[i], ((s.corrida ? vermelho : texto) & 0x00FFFFFF) | (passou ? 0x80000000 : 0xFF000000));
+            v.setTextColor(tt[i], ((s.corrida ? vermelho : sub) & 0x00FFFFFF) | (passou ? 0x80000000 : 0xFF000000));
+            v.setInt(rl[i], "setBackgroundResource", proxima ? R.drawable.widget_next_bg : 0);
+            if (passou) { v.setTextColor(gg[i], verde); v.setTextViewText(gg[i], vert ? "✓ concluído" : "✓"); v.setViewVisibility(gg[i], View.VISIBLE); }
+            else if (proxima) { v.setTextColor(gg[i], vermelho); v.setTextViewText(gg[i], WidgetFmt.eta(s.t - agora, vert)); v.setViewVisibility(gg[i], View.VISIBLE); }
+            else v.setViewVisibility(gg[i], View.GONE);
+            tam(v, gg[i], 10 * Math.min(esc, 1.5f));
             tam(v, dd[i], 15 * esc); tam(v, ww[i], 9 * esc); tam(v, nn[i], 12.5f * esc); tam(v, tt[i], 10.5f * esc);
         }
     }

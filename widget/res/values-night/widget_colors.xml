@@ -4,4 +4,6 @@
     <color name="wg_text">#FFF2F2F5</color>
     <color name="wg_sub">#FFA0A0AB</color>
     <color name="wg_accent">#FFFF4A3D</color>
+    <color name="wg_next">#26FF4A3D</color>
+    <color name="wg_ok">#FF7BE495</color>
 </resources>
