@@ -46,7 +46,7 @@ async function fechar({ db, messaging, agendaDir, simular, log = console.log, ag
   // grava a hora do encerramento (a trava das regras do Firebase usa isso)
   if (!f.em || f.em.toMillis() !== T.getTime()) { await fmRef.set({ em: Timestamp.fromDate(T) }, { merge: true }); log('Hora de encerramento gravada: ' + r.n + ' as ' + T.toISOString()); }
 
-  if (T - agora() > ESPERA_MAX) { log('Ainda falta mais de 120 min para o encerramento de ' + r.n + ' (' + T.toISOString() + ').'); return saida; }
+  if (T - agora() > ESPERA_MAX) { log('Ainda falta mais de 120 min para o encerramento de ' + r.n + ' (' + T.toISOString() + ').' + (T - agora() <= 36 * 60 * MIN ? ' [REARMAR]' : '')); return saida; } // [REARMAR] = o workflow continua vigiando de 4 em 4 min (o agendamento do GitHub falha por horas)
 
   // espera ate o minuto certo, conferindo se nada mudou
   while (T - agora() > 0) {

@@ -5,14 +5,14 @@ on:
   workflow_dispatch:
 permissions:
   actions: write
-# Um de cada vez. Quando falta ate 2 horas para o encerramento, o processo fica esperando ate o minuto certo.
+# Um de cada vez (revezamento: o proximo fica na fila e assume quando este terminar).
 concurrency:
   group: fechar
   cancel-in-progress: false
 jobs:
   fechar:
     runs-on: ubuntu-latest
-    timeout-minutes: 135
+    timeout-minutes: 345
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,10 +22,21 @@ jobs:
       - name: Encerrar (se for a hora)
         env:
           SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
-          GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" node avisos/fechar.js
+          # O agendamento do GitHub as vezes fica HORAS sem rodar. Por isso, quando o encerramento esta a menos de 36 h,
+          # este processo fica vigiando (confere de 4 em 4 min) e, ao chegar perto do limite de tempo, chama o proximo (revezamento).
+          fim=$((SECONDS + 12000)); rearmar=0
+          while true; do
+            out=$(GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" node avisos/fechar.js 2>&1) || true
+            echo "$out"
+            if echo "$out" | grep -q 'REARMAR'; then rearmar=1; else rearmar=0; break; fi
+            if [ "$SECONDS" -ge "$fim" ]; then break; fi
+            sleep 240
+          done
           rm -f "$RUNNER_TEMP/sa.json"
+          if [ "$rearmar" = "1" ]; then gh workflow run fechar.yml --repo ${{ github.repository }} --ref main || true; fi
       - name: Manter o agendamento ativo (o GitHub desliga agendamentos de repositorios parados ha 60 dias)
         if: always()
         env:
